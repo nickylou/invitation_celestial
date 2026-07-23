@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicky & Gina Wedding Invitation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <section id="landing" aria-label="Opening screen">
+    <div class="hero-image"></div>
+    <div class="hero-ripple"></div>
+    <div class="hero-glow"></div>
+    <div class="dark-vignette"></div>
+
+    <div class="cta-layer">
+      <p class="tap-text">Tap to Enter Our Night Sky</p>
+      <div class="tap-line"></div>
+    </div>
+  </section>
+
+  <main id="world">
+    <div id="sky" class="sky-active"></div>
+    <div class="sky-soft-overlay"></div>
+    <div class="star-field-foreground"></div>
+    <div class="aurora-glow"></div>
+    <div class="floating-particles"></div>
+
+    <section class="ultra-hero" data-sky="original">
+      <p class="eyebrow">The Wedding of</p>
+      <h1>Nicky <span>&</span> Gina</h1>
+      <p class="date">11 October 2026 · MDC Hall Jakarta</p>
+
+      <div class="hero-divider"></div>
+
+      <div class="nav-cards">
+		  <a href="#couple" class="nav-card">The Couple</a>
+		  <a href="#wedding" class="nav-card">Wedding Reception</a>
+		  <a href="#location" class="nav-card">Location</a>
+		  <a href="#rsvp" class="nav-card">RSVP</a>
+	  </div>
+    </section>
+
+    <section id="couple" class="glass-section" data-sky="capricorn">
+	  <h2>The Couple</h2>
+
+	  <div class="couple-container">
+		<img src="assets/Couple.png" alt="Nicky & Gina" class="couple-photo"/>
+
+		<h3>Nicky & Gina</h3>
+
+		<p class="parents">
+		  Son of Mr. [Father Name] & Mrs. [Mother Name]<br/>
+		  Daughter of Mr. [Father Name] & Mrs. [Mother Name]
+		</p>
+	  </div>
+	</section>
+
+	<section id="wedding" class="glass-section" data-sky="libra">
+	  <h2>Wedding Reception</h2>
+
+	  <p>Sunday, 11 October 2026</p>
+	  <p>19:00 – 21:00 WIB</p>
+	  <p>MDC Hall Jakarta</p>
+	  
+	  <h2></h2>
+	  <h3>Countdown</h3>
+      <div id="countdown" class="countdown-grid"></div>
+	  
+	</section>
+
+
+	<section id="location" class="glass-section" data-sky="virgo">
+	  <h2>Location</h2>
+
+	  <div class="map-container">
+		<iframe
+		  src="https://www.google.com/maps?q=MDC+Hall+Jakarta&output=embed"
+		  width="100%"
+		  height="300"
+		  style="border:0; border-radius:20px;"
+		  allowfullscreen=""
+		  loading="lazy">
+		</iframe>
+	  </div>
+	</section>
+
+	<section id="rsvp" class="glass-section" data-sky="scorpio">
+	  <h2 id="rsvp-title">RSVP</h2>
+
+	  <!-- FORM -->
+	<div id="rsvp-form">
+	  <input type="text" id="name" placeholder="Your Name" class="input"/>
+
+	<div class="form-group">
+	  <p class="form-question">Will you attend?</p>
+
+	  <div class="radio-group">
+		<label class="radio-option">
+		  <input type="radio" name="attendance" value="yes">
+		  <span>Yes</span>
+		</label>
+
+		<label class="radio-option">
+		  <input type="radio" name="attendance" value="no">
+		  <span>No, sorry</span>
+		</label>
+	  </div>
+	</div>
+
+	  <!-- NUMBER OF GUEST -->
+	  <input type="number" id="guestCount" placeholder="Number of guests (including you)" class="input" min="1"/>
+
+	  <textarea id="message" placeholder="Leave your wishes..." class="message-input"></textarea>
+
+	  <button class="ultra-btn" onclick="submitRSVP()">Submit</button>
+	</div>
+
+	  <!-- MESSAGE BOARD -->
+	  <div id="message-board" style="display:none;">
+		<h3>Wishes from Loved Ones</h3>
+		<div id="messages-list"></div>
+	  </div>
+	</section>
+
+	
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
