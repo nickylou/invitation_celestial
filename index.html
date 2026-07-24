@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nicky & Gina Wedding Invitation</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=4.1" />
 </head>
 <body>
   <section id="landing" aria-label="Opening screen">
@@ -14,8 +14,17 @@
     <div class="dark-vignette"></div>
 
     <div class="cta-layer">
-      <p class="tap-text">Tap to Enter Our Night Sky</p>
-      <div class="tap-line"></div>
+      <button id="enterInvitation" class="enter-button" type="button" aria-label="Enter our night sky and open the wedding invitation">
+        <span>Enter Our Night Sky</span>
+      </button>
+
+      <div class="tap-guidance" aria-hidden="true">
+        <span class="tap-ripple"></span>
+        <svg class="tap-icon" viewBox="0 0 32 40" role="img">
+          <path d="M15.8 3.5c-2 0-3.6 1.6-3.6 3.6v11.6l-1.7-2.2a3.5 3.5 0 0 0-5.5 4.3l7.2 9.2a8.5 8.5 0 0 0 6.7 3.3h1.4a8.4 8.4 0 0 0 8.4-8.4V15a3.4 3.4 0 0 0-5.8-2.4 3.5 3.5 0 0 0-5.7-1.5v-4c0-2-1.5-3.6-3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p class="tap-helper">Tap to open your invitation</p>
+      </div>
     </div>
   </section>
 
@@ -34,10 +43,10 @@
       <div class="hero-divider"></div>
 
       <div class="nav-cards">
-		  <a href="#couple" class="nav-card">The Couple</a>
-		  <a href="#wedding" class="nav-card">Wedding Reception</a>
-		  <a href="#location" class="nav-card">Location</a>
-		  <a href="#rsvp" class="nav-card">RSVP</a>
+		  <a href="#couple" class="nav-card"><span>The Couple</span></a>
+		  <a href="#wedding" class="nav-card"><span>Wedding Reception</span></a>
+		  <a href="#location" class="nav-card"><span>Location</span></a>
+		  <a href="#rsvp" class="nav-card"><span>RSVP</span></a>
 	  </div>
     </section>
 
@@ -115,7 +124,7 @@
 
 	  <textarea id="message" placeholder="Leave your wishes..." class="message-input"></textarea>
 
-	  <button class="ultra-btn" onclick="submitRSVP()">Submit</button>
+	  <button class="ultra-btn" onclick="submitRSVP()"><span>Submit</span></button>
 	</div>
 
 	  <!-- MESSAGE BOARD -->

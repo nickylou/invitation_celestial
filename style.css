@@ -103,37 +103,129 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 270px;
+  padding-top: 430px;
   pointer-events: none;
 }
 
-.tap-text {
-  font-size: 17px;
+.enter-button {
+  position: relative;
+  min-width: min(520px, 78vw);
+  padding: 18px 34px;
+  border: 1px solid rgba(231, 195, 118, .92);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(18, 42, 86, .76), rgba(8, 25, 59, .82));
+  color: #f3d995;
+  font: inherit;
+  font-size: clamp(17px, 2vw, 23px);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .05) inset,
+    0 0 24px rgba(216, 181, 109, .28),
+    0 8px 32px rgba(0, 0, 0, .3);
+  text-shadow: 0 0 15px rgba(240, 210, 145, .34);
+  animation: enterButtonBreath 4s ease-in-out infinite;
+  transition: transform .25s ease, background .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+
+.enter-button::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  width: 18%;
+  left: -24%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255, 244, 205, .34), transparent);
+  filter: blur(4px);
+  transform: skewX(-18deg);
+  animation: buttonShimmer 6s ease-in-out infinite;
+}
+
+.enter-button:hover,
+.enter-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 222, 145, 1);
+  background: linear-gradient(180deg, rgba(27, 56, 105, .86), rgba(10, 31, 71, .9));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .08) inset,
+    0 0 34px rgba(216, 181, 109, .42),
+    0 10px 34px rgba(0, 0, 0, .34);
+}
+
+.enter-button:active {
+  transform: scale(.98);
+}
+
+.tap-guidance {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 17px;
+  color: rgba(242, 218, 158, .92);
+  pointer-events: none;
+}
+
+.tap-icon {
+  width: 25px;
+  height: 31px;
+  margin-bottom: 3px;
+  filter: drop-shadow(0 0 7px rgba(216, 181, 109, .35));
+}
+
+.tap-ripple {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(242, 218, 158, .9);
+  border-radius: 50%;
+  transform: translateX(-50%) scale(.45);
+  animation: fingertipRipple 2.6s ease-out infinite;
+}
+
+.tap-helper {
+  font-size: clamp(14px, 1.5vw, 17px);
   font-style: italic;
-  letter-spacing: .04em;
-  color: rgba(255,255,255,.96);
-  text-shadow:
-    0 2px 12px rgba(0,0,0,.65),
-    0 0 18px rgba(255,255,255,.25);
-  animation: breathe 2.8s ease-in-out infinite;
+  letter-spacing: .03em;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 2px 12px rgba(0,0,0,.7);
 }
 
-.tap-line {
-  margin-top: 12px;
-  width: 80px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
-  animation: lineGlow 2.8s ease-in-out infinite;
+@keyframes enterButtonBreath {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,.05) inset, 0 0 22px rgba(216,181,109,.24), 0 8px 32px rgba(0,0,0,.3);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 0 34px rgba(216,181,109,.4), 0 10px 36px rgba(0,0,0,.32);
+  }
 }
 
-@keyframes breathe {
-  0%, 100% { opacity: .62; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-3px); }
+@keyframes buttonShimmer {
+  0%, 58% { left: -24%; opacity: 0; }
+  64% { opacity: .8; }
+  78%, 100% { left: 106%; opacity: 0; }
 }
 
-@keyframes lineGlow {
-  0%, 100% { opacity: .3; width: 50px; }
-  50% { opacity: 1; width: 110px; }
+@keyframes fingertipRipple {
+  0% { transform: translateX(-50%) scale(.4); opacity: 0; }
+  18% { opacity: .9; }
+  72%, 100% { transform: translateX(-50%) scale(2.2); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image,
+  .hero-ripple,
+  .hero-glow,
+  .enter-button,
+  .enter-button::after,
+  .tap-ripple {
+    animation: none !important;
+  }
 }
 
 /* WORLD */
@@ -394,7 +486,17 @@ body {
   }
 
   .cta-layer {
-    padding-top: 245px;
+    padding: 410px 18px 0;
+  }
+
+  .enter-button {
+    min-width: min(430px, 88vw);
+    padding: 15px 22px;
+    letter-spacing: .11em;
+  }
+
+  .tap-guidance {
+    margin-top: 14px;
   }
 
   .nav-cards {
@@ -634,4 +736,85 @@ body.lightbox-open {
 
 .radio-option:hover {
   background: rgba(255,255,255,0.08);
+}
+
+/* =========================================================
+   V4.1 — Champagne-gold frames + brushed-platinum labels
+   Kept at the end of the stylesheet so these rules win over
+   all earlier button declarations.
+   ========================================================= */
+
+:root {
+  --button-gold: rgba(231, 195, 118, 0.96);
+  --button-gold-bright: rgba(255, 222, 145, 1);
+  --button-gold-glow: rgba(216, 181, 109, 0.30);
+  --button-navy-top: rgba(18, 42, 86, 0.78);
+  --button-navy-bottom: rgba(8, 25, 59, 0.86);
+}
+
+/* Shared frame treatment */
+#landing .enter-button,
+#world .nav-card,
+#world .ultra-btn {
+  border-color: var(--button-gold) !important;
+  background: linear-gradient(
+    180deg,
+    var(--button-navy-top),
+    var(--button-navy-bottom)
+  ) !important;
+  color: #d8dce3 !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.045) inset,
+    0 0 22px var(--button-gold-glow),
+    0 9px 28px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Brushed-platinum lettering */
+#landing .enter-button > span,
+#world .nav-card > span,
+#world .ultra-btn > span {
+  display: inline-block;
+  background-image: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #eef1f5 16%,
+    #c5cbd3 39%,
+    #8f99a6 51%,
+    #dce1e7 67%,
+    #f8f9fb 82%,
+    #b8c0ca 100%
+  ) !important;
+  background-size: 100% 145%;
+  background-position: center;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 8px rgba(222, 228, 236, 0.13) !important;
+}
+
+#landing .enter-button:hover,
+#landing .enter-button:focus-visible,
+#world .nav-card:hover,
+#world .nav-card:focus-visible,
+#world .ultra-btn:hover,
+#world .ultra-btn:focus-visible {
+  border-color: var(--button-gold-bright) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 58, 108, 0.88),
+    rgba(10, 31, 71, 0.93)
+  ) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.075) inset,
+    0 0 32px rgba(216, 181, 109, 0.43),
+    0 11px 34px rgba(0, 0, 0, 0.32) !important;
+}
+
+/* Keep utility controls visually neutral */
+.couple-photo-button,
+.lightbox-close {
+  color: inherit;
 }

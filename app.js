@@ -28,14 +28,21 @@ function transportToSky(type) {
   }, 520);
 }
 
-landing.addEventListener("click", () => {
+function enterInvitation() {
   if (hasEntered) return;
   hasEntered = true;
 
   const hero = document.querySelector(".hero-image");
   const ripple = document.querySelector(".hero-ripple");
+  const cta = document.querySelector(".cta-layer");
 
   world.style.opacity = "1";
+
+  if (cta) {
+    cta.style.transition = "opacity .7s ease, transform .9s ease";
+    cta.style.opacity = "0";
+    cta.style.transform = "translateY(-8px)";
+  }
 
   hero.style.animation = "none";
   hero.style.transition = "transform 3.2s cubic-bezier(.16,1,.3,1), filter 2.8s ease";
@@ -55,6 +62,13 @@ landing.addEventListener("click", () => {
     landing.style.display = "none";
     document.body.style.overflow = "auto";
   }, 2700);
+}
+
+landing.addEventListener("click", enterInvitation);
+
+document.getElementById("enterInvitation")?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  enterInvitation();
 });
 
 document.querySelectorAll("[data-goto-sky]").forEach((button) => {
