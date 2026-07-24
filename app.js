@@ -176,3 +176,37 @@ window.addEventListener("load", () => {
     showMessages();
   }
 });
+
+// Couple photo lightbox
+const couplePhotoButton = document.querySelector(".couple-photo-button");
+const photoLightbox = document.getElementById("photo-lightbox");
+const lightboxClose = document.querySelector(".lightbox-close");
+
+function openPhotoLightbox() {
+  if (!photoLightbox) return;
+  photoLightbox.classList.add("is-open");
+  photoLightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("lightbox-open");
+  lightboxClose?.focus();
+}
+
+function closePhotoLightbox() {
+  if (!photoLightbox) return;
+  photoLightbox.classList.remove("is-open");
+  photoLightbox.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("lightbox-open");
+  couplePhotoButton?.focus();
+}
+
+couplePhotoButton?.addEventListener("click", openPhotoLightbox);
+lightboxClose?.addEventListener("click", closePhotoLightbox);
+
+photoLightbox?.addEventListener("click", (event) => {
+  if (event.target === photoLightbox) closePhotoLightbox();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && photoLightbox?.classList.contains("is-open")) {
+    closePhotoLightbox();
+  }
+});

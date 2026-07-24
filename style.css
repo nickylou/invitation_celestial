@@ -431,13 +431,100 @@ body {
   text-align: center;
 }
 
+.couple-photo-button {
+  display: inline-flex;
+  padding: 0;
+  margin: 0 0 24px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: zoom-in;
+  line-height: 0;
+  transition: transform .35s ease, filter .35s ease;
+}
+
+.couple-photo-button:hover,
+.couple-photo-button:focus-visible {
+  transform: scale(1.025);
+  filter: brightness(1.08);
+  outline: none;
+}
+
 .couple-photo {
-  width: 180px;
-  height: 180px;
+  width: 360px;
+  height: 360px;
+  max-width: min(72vw, 360px);
+  max-height: min(72vw, 360px);
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 20px;
-  border: 2px solid rgba(255,255,255,.4);
+  border: 2px solid rgba(255,255,255,.5);
+  box-shadow: 0 20px 60px rgba(0,0,0,.38), 0 0 32px rgba(170,195,255,.14);
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(1, 4, 18, .92);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+}
+
+.photo-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-image {
+  display: block;
+  max-width: min(94vw, 1400px);
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 30px 100px rgba(0,0,0,.65);
+  transform: scale(.96);
+  transition: transform .3s ease;
+}
+
+.photo-lightbox.is-open .lightbox-image {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  z-index: 1001;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  background: rgba(5,10,35,.55);
+  color: white;
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+body.lightbox-open {
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .couple-photo {
+    width: min(78vw, 320px);
+    height: min(78vw, 320px);
+    max-width: none;
+    max-height: none;
+  }
 }
 
 .parents {
