@@ -818,3 +818,17 @@ body.lightbox-open {
 .lightbox-close {
   color: inherit;
 }
+
+/*RSVP*/
+[hidden]{display:none!important}.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0}
+
+#rsvp-form,#message-board{width:100%}.input::placeholder,.message-input::placeholder{color:rgba(238,241,245,.62)}.input:focus,.message-input:focus{outline:1px solid rgba(231,195,118,.8);box-shadow:0 0 18px rgba(216,181,109,.18)}.input:disabled{opacity:.55;cursor:not-allowed}.rsvp-status,.messages-status{min-height:1.4em;margin-top:14px;font-family:Arial,sans-serif;font-size:13px;opacity:.9}.rsvp-status.is-error{color:#ffd1d1}.rsvp-status.is-success{color:#eef1f5}.rsvp-status.is-loading{color:#e7c376}#rsvp-submit:disabled{opacity:.55;cursor:wait;transform:none!important}.message-board-heading{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.message-board-heading h3{margin:0}.message-refresh{border:1px solid rgba(231,195,118,.72);border-radius:999px;padding:7px 13px;background:rgba(8,25,59,.68);color:#dce1e7;font-family:Arial,sans-serif;font-size:12px;cursor:pointer}.message-refresh:hover,.message-refresh:focus-visible{border-color:rgba(255,222,145,1);box-shadow:0 0 16px rgba(216,181,109,.25)}#messages-list{max-height:min(52vh,520px);overflow-y:auto;padding-right:5px;scrollbar-width:thin;scrollbar-color:rgba(231,195,118,.6) rgba(255,255,255,.06)}.message-item{border:1px solid rgba(231,195,118,.18);background:linear-gradient(180deg,rgba(14,35,76,.62),rgba(7,21,53,.66))}.message-name{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#eef1f5}.attendance-badge{flex:0 0 auto;padding:4px 8px;border-radius:999px;font-family:Arial,sans-serif;font-size:10px;font-weight:normal;letter-spacing:.04em;border:1px solid rgba(231,195,118,.35);color:#cfd5dd}.attendance-badge.is-attending{border-color:rgba(231,195,118,.65);color:#f2e1b5}.message-text{margin-top:8px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:480px){.radio-group{flex-direction:column}.message-name{align-items:flex-start;flex-direction:column;gap:6px}}
