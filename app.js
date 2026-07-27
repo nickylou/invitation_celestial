@@ -92,7 +92,7 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach((section) => observer.observe(section));
 
 const countdownEl = document.getElementById("countdown");
-const weddingDate = new Date("2026-10-11T19:00:00+07:00");
+const weddingDate = new Date("2026-10-11T18:30:00+07:00");
 
 function updateCountdown() {
   const now = new Date();
