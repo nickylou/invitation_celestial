@@ -99,41 +99,43 @@
 	<section id="rsvp" class="glass-section" data-sky="scorpio">
 	  <h2 id="rsvp-title">RSVP</h2>
 
-	  <!-- FORM -->
-	<div id="rsvp-form">
-	  <input type="text" id="name" placeholder="Your Name" class="input"/>
+	  <form id="rsvp-form" novalidate>
+		<label class="sr-only" for="name">Your name</label>
+		<input type="text" id="name" placeholder="Your Name" class="input" maxlength="80" autocomplete="name" required />
 
-	<div class="form-group">
-	  <p class="form-question">Will you attend?</p>
+		<div class="form-group">
+		  <p class="form-question">Will you attend?</p>
+		  <div class="radio-group" role="radiogroup" aria-label="Attendance">
+			<label class="radio-option">
+			  <input type="radio" name="attendance" value="accept" required />
+			  <span>Yes</span>
+			</label>
+			<label class="radio-option">
+			  <input type="radio" name="attendance" value="decline" required />
+			  <span>No, sorry</span>
+			</label>
+		  </div>
+		</div>
 
-	  <div class="radio-group">
-		<label class="radio-option">
-		  <input type="radio" name="attendance" value="yes">
-		  <span>Yes</span>
-		</label>
+		<label class="sr-only" for="guestCount">Number of guests including you</label>
+		<input type="number" id="guestCount" placeholder="Number of guests (including you)" class="input" min="1" max="20" inputmode="numeric" required />
 
-		<label class="radio-option">
-		  <input type="radio" name="attendance" value="no">
-		  <span>No, sorry</span>
-		</label>
-	  </div>
-	</div>
+		<label class="sr-only" for="message">Message or wishes</label>
+		<textarea id="message" placeholder="Leave your wishes..." class="message-input" maxlength="500"></textarea>
 
-	  <!-- NUMBER OF GUEST -->
-	  <input type="number" id="guestCount" placeholder="Number of guests (including you)" class="input" min="1"/>
+		<p id="rsvp-status" class="rsvp-status" role="status" aria-live="polite"></p>
+		<button id="rsvp-submit" class="ultra-btn" type="submit"><span>Submit RSVP</span></button>
+	  </form>
 
-	  <textarea id="message" placeholder="Leave your wishes..." class="message-input"></textarea>
-
-	  <button class="ultra-btn" onclick="submitRSVP()"><span>Submit</span></button>
-	</div>
-
-	  <!-- MESSAGE BOARD -->
-	  <div id="message-board" style="display:none;">
-		<h3>Wishes from Loved Ones</h3>
+	  <div id="message-board" hidden>
+		<div class="message-board-heading">
+		  <h3>Wishes from Loved Ones</h3>
+		  <button id="refresh-messages" class="message-refresh" type="button" aria-label="Refresh guest messages">Refresh</button>
+		</div>
+		<p id="messages-status" class="messages-status" role="status" aria-live="polite">Loading messages…</p>
 		<div id="messages-list"></div>
 	  </div>
 	</section>
-
 	
   </main>
 
