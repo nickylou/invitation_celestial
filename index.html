@@ -127,13 +127,17 @@
 		<button id="rsvp-submit" class="ultra-btn" type="submit"><span>Submit RSVP</span></button>
 	  </form>
 
-	  <div id="message-board" hidden>
+	  <div id="message-board" class="guestbook" hidden>
 		<div class="message-board-heading">
-		  <h3>Wishes from Loved Ones</h3>
-		  <button id="refresh-messages" class="message-refresh" type="button" aria-label="Refresh guest messages">Refresh</button>
+		  <div>
+			<p class="guestbook-kicker">Written among the stars</p>
+			<h3>Guestbook</h3>
+			<p id="guestbook-count" class="guestbook-count">Wishes from our family and friends</p>
+		  </div>
+		  <button id="refresh-messages" class="message-refresh" type="button" aria-label="Refresh guestbook messages">Refresh</button>
 		</div>
-		<p id="messages-status" class="messages-status" role="status" aria-live="polite">Loading messages…</p>
-		<div id="messages-list"></div>
+		<p id="messages-status" class="messages-status" role="status" aria-live="polite">Loading guestbook…</p>
+		<div id="messages-list" class="guestbook-grid"></div>
 	  </div>
 	</section>
 	

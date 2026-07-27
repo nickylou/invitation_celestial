@@ -832,3 +832,204 @@ body.lightbox-open {
   border:0}
 
 #rsvp-form,#message-board{width:100%}.input::placeholder,.message-input::placeholder{color:rgba(238,241,245,.62)}.input:focus,.message-input:focus{outline:1px solid rgba(231,195,118,.8);box-shadow:0 0 18px rgba(216,181,109,.18)}.input:disabled{opacity:.55;cursor:not-allowed}.rsvp-status,.messages-status{min-height:1.4em;margin-top:14px;font-family:Arial,sans-serif;font-size:13px;opacity:.9}.rsvp-status.is-error{color:#ffd1d1}.rsvp-status.is-success{color:#eef1f5}.rsvp-status.is-loading{color:#e7c376}#rsvp-submit:disabled{opacity:.55;cursor:wait;transform:none!important}.message-board-heading{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.message-board-heading h3{margin:0}.message-refresh{border:1px solid rgba(231,195,118,.72);border-radius:999px;padding:7px 13px;background:rgba(8,25,59,.68);color:#dce1e7;font-family:Arial,sans-serif;font-size:12px;cursor:pointer}.message-refresh:hover,.message-refresh:focus-visible{border-color:rgba(255,222,145,1);box-shadow:0 0 16px rgba(216,181,109,.25)}#messages-list{max-height:min(52vh,520px);overflow-y:auto;padding-right:5px;scrollbar-width:thin;scrollbar-color:rgba(231,195,118,.6) rgba(255,255,255,.06)}.message-item{border:1px solid rgba(231,195,118,.18);background:linear-gradient(180deg,rgba(14,35,76,.62),rgba(7,21,53,.66))}.message-name{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#eef1f5}.attendance-badge{flex:0 0 auto;padding:4px 8px;border-radius:999px;font-family:Arial,sans-serif;font-size:10px;font-weight:normal;letter-spacing:.04em;border:1px solid rgba(231,195,118,.35);color:#cfd5dd}.attendance-badge.is-attending{border-color:rgba(231,195,118,.65);color:#f2e1b5}.message-text{margin-top:8px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:480px){.radio-group{flex-direction:column}.message-name{align-items:flex-start;flex-direction:column;gap:6px}}
+
+
+/* V4.1 Celestial Guestbook */
+.guestbook {
+  width: 100%;
+}
+
+.message-board-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.message-board-heading h3 {
+  margin: 2px 0 4px;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 400;
+  color: #f3f5f8;
+}
+
+.guestbook-kicker {
+  margin: 0;
+  color: #e7c376;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.guestbook-count {
+  margin: 0;
+  color: rgba(226,231,238,.76);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+
+#messages-list.guestbook-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+  max-height: min(60vh, 620px);
+  margin-top: 20px;
+  padding: 2px 7px 2px 2px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(231,195,118,.62) rgba(255,255,255,.05);
+}
+
+.guestbook-card.message-item {
+  position: relative;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(231,195,118,.34);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(104,137,214,.16), transparent 38%),
+    linear-gradient(145deg, rgba(17,39,82,.80), rgba(6,20,51,.82));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 14px 38px rgba(0,0,0,.20);
+  text-align: left;
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+}
+
+.guestbook-card.message-item::after {
+  content: "";
+  position: absolute;
+  top: -42px;
+  right: -42px;
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,226,157,.13), transparent 68%);
+  pointer-events: none;
+}
+
+.guestbook-card.message-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,220,139,.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 18px 46px rgba(0,0,0,.26),
+    0 0 22px rgba(216,181,109,.10);
+}
+
+.guestbook-card .message-name {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  color: #f1f3f6;
+}
+
+.guest-identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 9px;
+}
+
+.guestbook-icon {
+  flex: 0 0 auto;
+  font-size: 15px;
+  filter: grayscale(.15) saturate(.75);
+}
+
+.guest-name-text {
+  overflow-wrap: anywhere;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.attendance-badge {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border: 1px solid rgba(231,195,118,.38);
+  border-radius: 999px;
+  background: rgba(7,19,49,.48);
+  color: #cfd5dd;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .045em;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.attendance-badge.is-attending {
+  border-color: rgba(231,195,118,.66);
+  background: rgba(176,137,63,.10);
+  color: #f2e1b5;
+}
+
+.attendance-badge.is-declining {
+  border-color: rgba(183,197,221,.35);
+  background: rgba(125,148,187,.08);
+  color: #d5dce7;
+}
+
+.guest-message-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(231,195,118,.14);
+}
+
+.message-icon {
+  margin-top: 1px;
+}
+
+.guestbook-card .message-text {
+  margin: 0;
+  color: rgba(238,241,245,.88);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.guestbook-card .message-text.is-placeholder {
+  color: rgba(220,226,235,.66);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+}
+
+@media (max-width: 680px) {
+  .message-board-heading {
+    align-items: flex-start;
+  }
+
+  #messages-list.guestbook-grid {
+    grid-template-columns: 1fr;
+    max-height: min(58vh, 560px);
+  }
+}
+
+@media (max-width: 480px) {
+  .message-board-heading {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .guestbook-card.message-item {
+    padding: 17px;
+  }
+
+  .guestbook-card .message-name {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+}

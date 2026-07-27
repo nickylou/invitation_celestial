@@ -139,7 +139,7 @@ Object.values(skies).forEach((src) => {
 
 const RSVP_WEB_APP_URL="https://script.google.com/macros/s/AKfycbxn-RdCTke-ymQErF0_-d8uNVlyEwpdRXhfKANc_Gsh95Ms-rc4HPiivc7g4DDx0nYmvA/exec";
 const RSVP_SUBMITTED_KEY="celestialInviteRsvpSubmittedV1";
-const rsvpForm=document.getElementById("rsvp-form"),rsvpTitle=document.getElementById("rsvp-title"),rsvpStatus=document.getElementById("rsvp-status"),rsvpSubmit=document.getElementById("rsvp-submit"),messageBoard=document.getElementById("message-board"),messagesList=document.getElementById("messages-list"),messagesStatus=document.getElementById("messages-status"),refreshMessagesButton=document.getElementById("refresh-messages"),guestCountInput=document.getElementById("guestCount");
+const rsvpForm=document.getElementById("rsvp-form"),rsvpTitle=document.getElementById("rsvp-title"),rsvpStatus=document.getElementById("rsvp-status"),rsvpSubmit=document.getElementById("rsvp-submit"),messageBoard=document.getElementById("message-board"),messagesList=document.getElementById("messages-list"),messagesStatus=document.getElementById("messages-status"),guestbookCount=document.getElementById("guestbook-count"),refreshMessagesButton=document.getElementById("refresh-messages"),guestCountInput=document.getElementById("guestCount");
 
 function isRsvpEndpointConfigured(){
   return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(RSVP_WEB_APP_URL);
@@ -190,18 +190,52 @@ document.querySelectorAll('input[name="attendance"]').forEach(radio=>radio.addEv
 function showMessageBoard(){
   if(rsvpForm)rsvpForm.hidden=true;
   if(messageBoard)messageBoard.hidden=false;
-  if(rsvpTitle)rsvpTitle.textContent="Message Board";loadMessages();
+  if(rsvpTitle)rsvpTitle.textContent="Guestbook";loadMessages();
 }
 
 function createMessageElement(message){
-  const article=document.createElement("article");article.className="message-item";
-  const heading=document.createElement("div");heading.className="message-name";heading.append(document.createTextNode(message.name||"Guest"));
-  const badge=document.createElement("span");badge.className=`attendance-badge ${message.attendance==="accept"?"is-attending":"is-declining"}`;badge.textContent=message.attendance==="accept"?"Attending":"Sending wishes";heading.appendChild(badge);
-  const text=document.createElement("div");text.className="message-text";text.textContent=message.message||"Wishing the couple a beautiful celebration.";article.append(heading,text);return article;
+  const attending=message.attendance==="accept";
+  const article=document.createElement("article");
+  article.className="message-item guestbook-card";
+
+  const heading=document.createElement("div");
+  heading.className="message-name";
+
+  const guestIdentity=document.createElement("div");
+  guestIdentity.className="guest-identity";
+  const guestIcon=document.createElement("span");
+  guestIcon.className="guestbook-icon";
+  guestIcon.setAttribute("aria-hidden","true");
+  guestIcon.textContent="👤";
+  const guestName=document.createElement("span");
+  guestName.className="guest-name-text";
+  guestName.textContent=message.name||"Guest";
+  guestIdentity.append(guestIcon,guestName);
+
+  const badge=document.createElement("span");
+  badge.className=`attendance-badge ${attending?"is-attending":"is-declining"}`;
+  badge.textContent=attending?"✨ Will Attend":"✨ Unable to Attend";
+  heading.append(guestIdentity,badge);
+
+  const messageRow=document.createElement("div");
+  messageRow.className="guest-message-row";
+  const messageIcon=document.createElement("span");
+  messageIcon.className="guestbook-icon message-icon";
+  messageIcon.setAttribute("aria-hidden","true");
+  messageIcon.textContent="💬";
+  const text=document.createElement("div");
+  text.className="message-text";
+  const hasMessage=String(message.message||"").trim();
+  text.textContent=hasMessage||"Wishing the couple all the best.";
+  if(!hasMessage)text.classList.add("is-placeholder");
+  messageRow.append(messageIcon,text);
+
+  article.append(heading,messageRow);
+  return article;
 }
 async function loadMessages(){
   if(!messagesList||!messagesStatus)return;messagesStatus.hidden=false;messagesStatus.textContent="Loading messages…";messagesList.replaceChildren();
-  try{const response=await requestJsonp({action:"list",limit:100});if(!response?.ok)throw new Error(response?.error||"Could not load messages.");const messages=(Array.isArray(response.messages)?response.messages:[]).filter(entry=>String(entry.message||"").trim());if(!messages.length){messagesStatus.textContent="No guest wishes have been posted yet.";return;}const fragment=document.createDocumentFragment();messages.forEach(message=>fragment.appendChild(createMessageElement(message)));messagesList.appendChild(fragment);messagesStatus.hidden=true;}
+  try{const response=await requestJsonp({action:"list",limit:100});if(!response?.ok)throw new Error(response?.error||"Could not load messages.");const messages=Array.isArray(response.messages)?response.messages:[];if(guestbookCount)guestbookCount.textContent=`${messages.length} ${messages.length===1?"wish":"wishes"} from our family and friends`;if(!messages.length){messagesStatus.textContent="No guest wishes have been posted yet.";return;}const fragment=document.createDocumentFragment();messages.forEach(message=>fragment.appendChild(createMessageElement(message)));messagesList.appendChild(fragment);messagesStatus.hidden=true;}
   catch(error){messagesStatus.textContent=error.message||"Unable to load messages right now.";}
 }
 rsvpForm?.addEventListener("submit",async event=>{
