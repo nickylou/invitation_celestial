@@ -1307,11 +1307,7 @@ body.lightbox-open {
   font-size: 13px;
 }
 
-/* Rendering optimisation for long pages */
-.glass-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 680px;
-}
+/* Rendering optimisation removed in V5.3.2 for reliable gallery painting. */
 
 /* Lower-end phone/data-saver mode */
 .low-performance .star-field-foreground,
@@ -1444,4 +1440,22 @@ body.lightbox-open {
    interact poorly. */
 #gallery:target {
   content-visibility: visible;
+}
+
+
+/* V5.3.2 gallery paint reliability */
+#gallery,
+#gallery.is-visible,
+#gallery:target {
+  content-visibility: visible !important;
+  contain: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+#gallery > *,
+#gallery.is-visible > *,
+#gallery:target > * {
+  opacity: 1 !important;
+  transform: none !important;
 }

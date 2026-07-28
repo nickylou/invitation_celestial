@@ -40,7 +40,13 @@
   }
 
   const lazyObserver = "IntersectionObserver" in window ? new IntersectionObserver(entries => entries.forEach(e => {
-    if (!e.isIntersecting) return; const img=e.target; img.src=img.dataset.src; delete img.dataset.src; lazyObserver.unobserve(img);
+    if (!e.isIntersecting) return;
+    const img = e.target;
+    if (img.dataset.src) {
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+    }
+    lazyObserver.unobserve(img);
   }), {rootMargin:"500px 0px"}) : null;
 
   async function load() {
@@ -52,7 +58,24 @@
       photos = entries.map(normalise).filter(Boolean);
       const fragment=document.createDocumentFragment();
       photos.forEach((p,i)=>fragment.append(skeleton(p,i))); grid.replaceChildren(fragment);
-      grid.querySelectorAll("img[data-src]").forEach(img => lazyObserver ? lazyObserver.observe(img) : (img.src=img.dataset.src));
+      const lazyImages = [...grid.querySelectorAll("img[data-src]")];
+
+      lazyImages.forEach((img, imageIndex) => {
+        const assignSource = () => {
+          if (!img.dataset.src) return;
+          img.src = img.dataset.src;
+          delete img.dataset.src;
+        };
+
+        // Render the first screen immediately. Remaining thumbnails are
+        // observed, with a guaranteed fallback for browser edge cases.
+        if (imageIndex < 12 || !lazyObserver) {
+          assignSource();
+        } else {
+          lazyObserver.observe(img);
+          window.setTimeout(assignSource, 1800 + imageIndex * 15);
+        }
+      });
       status.textContent = photos.length ? `${photos.length} moments in our gallery.` : "More moments will be added soon.";
       buildFilmstrip();
     } catch (error) {
