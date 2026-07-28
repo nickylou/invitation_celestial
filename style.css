@@ -1033,3 +1033,374 @@ body.lightbox-open {
     gap: 9px;
   }
 }
+
+/* =========================================================
+   V4.2 — motion, gallery, music, personalisation & performance
+   ========================================================= */
+
+.guest-greeting {
+  margin: 0 0 14px;
+  color: rgba(245, 247, 250, .94);
+  font-size: clamp(16px, 2vw, 22px);
+  font-style: italic;
+  letter-spacing: .05em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .72);
+}
+
+/* Subtle staggered entrance animation for section content */
+.glass-section > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .72s ease, transform .82s cubic-bezier(.2,.7,.2,1);
+}
+
+.glass-section.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.glass-section.is-visible > *:nth-child(2) { transition-delay: .07s; }
+.glass-section.is-visible > *:nth-child(3) { transition-delay: .14s; }
+.glass-section.is-visible > *:nth-child(4) { transition-delay: .21s; }
+.glass-section.is-visible > *:nth-child(5) { transition-delay: .28s; }
+
+.ultra-hero > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1);
+}
+
+.ultra-hero.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ultra-hero.is-visible > *:nth-child(2) { transition-delay: .08s; }
+.ultra-hero.is-visible > *:nth-child(3) { transition-delay: .16s; }
+.ultra-hero.is-visible > *:nth-child(4) { transition-delay: .24s; }
+.ultra-hero.is-visible > *:nth-child(5) { transition-delay: .32s; }
+
+/* Gallery */
+.gallery-section {
+  width: min(90%, 880px);
+}
+
+.gallery-intro {
+  max-width: 620px;
+  margin: 0 auto 26px;
+  color: rgba(232, 236, 243, .78);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+.gallery-item {
+  position: relative;
+  min-height: 230px;
+  overflow: hidden;
+  border: 1px solid rgba(231, 195, 118, .48);
+  border-radius: 24px;
+  background: rgba(6, 19, 49, .72);
+  cursor: pointer;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .28);
+  transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+.gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(2, 7, 22, .88), transparent 58%);
+  pointer-events: none;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: 230px;
+  display: block;
+  object-fit: cover;
+  transition: transform .65s cubic-bezier(.2,.7,.2,1), filter .4s ease;
+}
+
+.gallery-item span {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 17px;
+  z-index: 1;
+  color: #eef1f5;
+  font-size: 18px;
+  letter-spacing: .04em;
+  text-align: left;
+}
+
+.gallery-item:hover,
+.gallery-item:focus-visible {
+  transform: translateY(-5px);
+  border-color: rgba(255, 222, 145, .92);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, .35), 0 0 24px rgba(216, 181, 109, .14);
+}
+
+.gallery-item:hover img,
+.gallery-item:focus-visible img {
+  transform: scale(1.035);
+  filter: brightness(1.06);
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: minmax(48px, 1fr) minmax(0, 1100px) minmax(48px, 1fr);
+  align-items: center;
+  padding: 28px 18px 48px;
+  background: rgba(1, 4, 14, .94);
+  backdrop-filter: blur(18px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility .35s ease;
+  touch-action: pan-y;
+}
+
+.gallery-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gallery-lightbox-figure {
+  grid-column: 2;
+  margin: 0;
+  text-align: center;
+}
+
+.gallery-lightbox-figure img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .52);
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity .18s ease, transform .22s ease;
+}
+
+.gallery-lightbox-figure img.is-changing {
+  opacity: 0;
+  transform: scale(.985);
+}
+
+.gallery-lightbox-figure figcaption {
+  margin-top: 14px;
+  color: rgba(237, 240, 245, .86);
+  font-size: 16px;
+}
+
+.gallery-lightbox-close,
+.gallery-lightbox-nav {
+  border: 1px solid rgba(231, 195, 118, .56);
+  background: rgba(8, 25, 59, .78);
+  color: #e1e5eb;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(216, 181, 109, .12);
+}
+
+.gallery-lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.gallery-lightbox-nav {
+  width: 46px;
+  height: 58px;
+  border-radius: 999px;
+  font-size: 24px;
+  justify-self: center;
+}
+
+.gallery-lightbox-prev { grid-column: 1; }
+.gallery-lightbox-next { grid-column: 3; }
+
+.gallery-lightbox-counter {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  color: rgba(230, 234, 241, .7);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: .15em;
+}
+
+/* Music control */
+.music-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(231, 195, 118, .76);
+  border-radius: 999px;
+  background: rgba(6, 20, 52, .76);
+  color: #dce1e7;
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .32), 0 0 18px rgba(216, 181, 109, .14);
+  transition: transform .25s ease, border-color .25s ease, background .25s ease, opacity .4s ease;
+}
+
+.music-toggle:hover,
+.music-toggle:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 222, 145, 1);
+  background: rgba(11, 32, 72, .9);
+}
+
+.music-icon {
+  width: 25px;
+  height: 25px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(231, 195, 118, .46);
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.music-toggle.is-playing .music-icon {
+  animation: musicPulse 2.2s ease-in-out infinite;
+}
+
+.music-label {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+@keyframes musicPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(216, 181, 109, 0); }
+  50% { box-shadow: 0 0 0 5px rgba(216, 181, 109, .10); }
+}
+
+.rsvp-closed-notice {
+  max-width: 560px;
+  margin: 0 auto 24px;
+  padding: 13px 16px;
+  border: 1px solid rgba(231, 195, 118, .35);
+  border-radius: 16px;
+  background: rgba(8, 25, 59, .48);
+  color: rgba(236, 239, 245, .84);
+  font-size: 13px;
+}
+
+/* Rendering optimisation for long pages */
+.glass-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 680px;
+}
+
+/* Lower-end phone/data-saver mode */
+.low-performance .star-field-foreground,
+.low-performance .aurora-glow,
+.low-performance .floating-particles,
+.low-performance .hero-ripple {
+  display: none;
+}
+
+.low-performance .hero-image,
+.low-performance .hero-glow,
+.low-performance .enter-button,
+.low-performance .music-toggle.is-playing .music-icon {
+  animation: none !important;
+}
+
+.low-performance .glass-section,
+.low-performance .nav-card,
+.low-performance .music-toggle,
+.low-performance .gallery-lightbox {
+  backdrop-filter: none;
+}
+
+@media (max-width: 680px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-item,
+  .gallery-item img {
+    min-height: 210px;
+  }
+
+  .gallery-lightbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 54px 16px 58px;
+  }
+
+  .gallery-lightbox-figure img {
+    max-height: 74vh;
+  }
+
+  .gallery-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 50px;
+    transform: translateY(-50%);
+  }
+
+  .gallery-lightbox-prev { left: 10px; }
+  .gallery-lightbox-next { right: 10px; }
+
+  .music-toggle {
+    right: 12px;
+    bottom: 12px;
+    padding: 9px 11px;
+  }
+
+  .music-label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-section,
+  .glass-section > *,
+  .ultra-hero > *,
+  .gallery-item,
+  .gallery-item img,
+  .gallery-lightbox,
+  .gallery-lightbox-figure img,
+  .music-toggle,
+  .music-toggle.is-playing .music-icon {
+    animation: none !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+
+/* V4.2 manifest-driven gallery status */
+.gallery-status {
+  margin: 0.25rem auto 1.15rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: rgba(231, 234, 241, 0.72);
+}
+.gallery-status.is-empty { font-style: italic; }
+.gallery-status.is-error { color: rgba(255, 225, 190, 0.9); }
+.gallery-item.is-unavailable { display: none; }
