@@ -101,45 +101,48 @@ sections.forEach((section) => {
   skyObserver.observe(section);
 });
 
+const INVITATION_CONFIG = window.INVITATION_CONFIG || {};
 const countdownEl = document.getElementById("countdown");
-const weddingDate = new Date("2026-10-11T18:30:00+07:00");
+const weddingDate = new Date(INVITATION_CONFIG.weddingDate || "2026-10-11T18:30:00+07:00");
 
 function updateCountdown() {
+  if (!countdownEl) return;
   const now = new Date();
   const diff = weddingDate - now;
-
-  if (diff <= 0) {
-    countdownEl.innerHTML = `<p>Today is the day!</p>`;
+  const weddingEnd = new Date(INVITATION_CONFIG.weddingEndDate || weddingDate.getTime() + 3 * 60 * 60 * 1000);
+  if (now >= weddingDate && now <= weddingEnd) {
+    countdownEl.innerHTML = `<p class="countdown-celebration">${INVITATION_CONFIG.todayMessage || "Today is the day!"}</p>`;
     return;
   }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  if (now > weddingEnd) {
+    countdownEl.innerHTML = `<p class="countdown-celebration">${INVITATION_CONFIG.afterWeddingMessage || "Thank you for celebrating with us ✨"}</p>`;
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff / 3600000) % 24);
+  const minutes = Math.floor((diff / 60000) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
-
-  countdownEl.innerHTML = `
-    <div class="count-item">
-      <strong>${days}</strong>
-      <span>Days</span>
-    </div>
-    <div class="count-item">
-      <strong>${hours}</strong>
-      <span>Hrs</span>
-    </div>
-    <div class="count-item">
-      <strong>${minutes}</strong>
-      <span>Mins</span>
-    </div>
-    <div class="count-item">
-      <strong>${seconds}</strong>
-      <span>Secs</span>
-    </div>
-  `;
+  countdownEl.innerHTML = [
+    [days,"Days"],[hours,"Hrs"],[minutes,"Mins"],[seconds,"Secs"]
+  ].map(([value,label]) => `<div class="count-item"><strong>${value}</strong><span>${label}</span></div>`).join("");
 }
-
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+function applyAdminConfiguration(){
+  const setText=(id,value)=>{const el=document.getElementById(id);if(el&&value)el.textContent=value;};
+  setText("wedding-date-label",INVITATION_CONFIG.weddingDateLabel);
+  setText("wedding-time-label",INVITATION_CONFIG.weddingTimeLabel);
+  setText("wedding-venue-label",INVITATION_CONFIG.weddingVenueLabel);
+  setText("wedding-day-message",INVITATION_CONFIG.weddingDayMessage);
+  const configureLink=(id,enabled,url)=>{const el=document.getElementById(id);if(!el)return;el.hidden=!(enabled&&url);if(enabled&&url)el.href=url;};
+  configureLink("livestream-link",INVITATION_CONFIG.livestream?.enabled,INVITATION_CONFIG.livestream?.url);
+  configureLink("photo-upload-link",INVITATION_CONFIG.photoUpload?.enabled,INVITATION_CONFIG.photoUpload?.url);
+  const qr=document.getElementById("photo-upload-qr");
+  const qrImage=document.getElementById("photo-upload-qr-image");
+  if(qr&&qrImage&&INVITATION_CONFIG.photoUpload?.enabled&&INVITATION_CONFIG.photoUpload?.qrImage){qr.hidden=false;qrImage.src=INVITATION_CONFIG.photoUpload.qrImage;}
+}
+applyAdminConfiguration();
 
 // Preload constellation backgrounds only after the invitation opens, and during idle time.
 function preloadSkyBackgrounds() {
@@ -152,14 +155,7 @@ function preloadSkyBackgrounds() {
   else setTimeout(preload, 900);
 }
 
-// V4.2 configuration
-const INVITATION_CONFIG = {
-  rsvpCloseDate: "2026-10-04T23:59:59+07:00",
-  musicVolume: 0.42,
-  personalisedGreetingPrefix: "Dear"
-};
-
-const RSVP_WEB_APP_URL="https://script.google.com/macros/s/AKfycbxn-RdCTke-ymQErF0_-d8uNVlyEwpdRXhfKANc_Gsh95Ms-rc4HPiivc7g4DDx0nYmvA/exec";
+const RSVP_WEB_APP_URL=INVITATION_CONFIG.rsvpWebAppUrl||"";
 const RSVP_SUBMITTED_KEY="celestialInviteRsvpSubmittedV1";
 const rsvpClosedNotice=document.getElementById("rsvp-closed-notice");
 const rsvpForm=document.getElementById("rsvp-form"),rsvpTitle=document.getElementById("rsvp-title"),rsvpStatus=document.getElementById("rsvp-status"),rsvpSubmit=document.getElementById("rsvp-submit"),messageBoard=document.getElementById("message-board"),messagesList=document.getElementById("messages-list"),messagesStatus=document.getElementById("messages-status"),guestbookCount=document.getElementById("guestbook-count"),refreshMessagesButton=document.getElementById("refresh-messages"),guestCountInput=document.getElementById("guestCount");
@@ -350,141 +346,7 @@ document.addEventListener("keydown", (event) => {
   if(connection?.saveData||lowMemory||limitedCpu)document.documentElement.classList.add("low-performance");
 })();
 
-// Manifest-driven full-screen gallery with keyboard and touch-swipe navigation
-const GALLERY_MANIFEST_URL="assets/gallery/gallery.json";
-const galleryGrid=document.getElementById("gallery-grid");
-const galleryStatus=document.getElementById("gallery-status");
-const galleryLightbox=document.getElementById("gallery-lightbox");
-const galleryLightboxImage=document.getElementById("gallery-lightbox-image");
-const galleryLightboxCaption=document.getElementById("gallery-lightbox-caption");
-const galleryLightboxCounter=document.getElementById("gallery-lightbox-counter");
-const galleryClose=document.querySelector(".gallery-lightbox-close");
-const galleryPrev=document.querySelector(".gallery-lightbox-prev");
-const galleryNext=document.querySelector(".gallery-lightbox-next");
-let galleryItems=[];
-let galleryData=[];
-let galleryIndex=0;
-let galleryTouchStartX=0;
-
-function normaliseGalleryEntry(entry,index){
-  const value=typeof entry==="string"?{file:entry}:entry;
-  if(!value||typeof value.file!=="string"||!value.file.trim())return null;
-  const file=value.file.trim().replace(/^\.\//,"");
-  const src=file.startsWith("assets/")?file:`assets/gallery/${file}`;
-  const readable=file.split("/").pop().replace(/\.[^.]+$/,"").replace(/[-_]+/g," ").replace(/\b\w/g,(letter)=>letter.toUpperCase());
-  return {
-    src,
-    alt:String(value.alt||`Wedding photograph ${index+1}: ${readable}`),
-    caption:String(value.caption||readable)
-  };
-}
-
-function createGalleryItem(item,index){
-  const button=document.createElement("button");
-  button.className="gallery-item";
-  button.type="button";
-  button.dataset.galleryIndex=String(index);
-  button.setAttribute("aria-label",`Open full-size photo: ${item.caption}`);
-
-  const image=document.createElement("img");
-  image.src=item.src;
-  image.alt=item.alt;
-  image.loading="lazy";
-  image.decoding="async";
-  image.addEventListener("error",()=>button.classList.add("is-unavailable"),{once:true});
-
-  const caption=document.createElement("span");
-  caption.textContent=item.caption;
-  button.append(image,caption);
-  button.addEventListener("click",()=>openGallery(index));
-  return button;
-}
-
-async function loadGalleryManifest(){
-  if(!galleryGrid)return;
-  try{
-    const response=await fetch(GALLERY_MANIFEST_URL,{cache:"no-cache"});
-    if(!response.ok)throw new Error(`Gallery manifest returned ${response.status}.`);
-    const manifest=await response.json();
-    const entries=Array.isArray(manifest)?manifest:manifest.images;
-    if(!Array.isArray(entries))throw new Error("Gallery manifest must contain an images array.");
-
-    galleryData=entries.map(normaliseGalleryEntry).filter(Boolean);
-    galleryGrid.replaceChildren(...galleryData.map(createGalleryItem));
-    galleryItems=[...galleryGrid.querySelectorAll(".gallery-item")];
-
-    if(galleryStatus){
-      galleryStatus.textContent=galleryData.length?`${galleryData.length} moment${galleryData.length===1?"":"s"} in our gallery.`:"More moments will be added soon.";
-      galleryStatus.classList.toggle("is-empty",!galleryData.length);
-    }
-  }catch(error){
-    console.error("Could not load gallery manifest:",error);
-    if(galleryStatus){
-      galleryStatus.textContent="The gallery could not be loaded. Please refresh the page in a moment.";
-      galleryStatus.classList.add("is-error");
-    }
-  }
-}
-
-function preloadAdjacentGalleryImages(){
-  if(galleryData.length<2)return;
-  [-1,1].forEach((offset)=>{
-    const item=galleryData[(galleryIndex+offset+galleryData.length)%galleryData.length];
-    if(item){const image=new Image();image.src=item.src;}
-  });
-}
-
-function renderGalleryImage(){
-  const item=galleryData[galleryIndex];
-  if(!item||!galleryLightboxImage)return;
-  galleryLightboxImage.classList.add("is-changing");
-  setTimeout(()=>{
-    galleryLightboxImage.src=item.src;
-    galleryLightboxImage.alt=item.alt;
-    if(galleryLightboxCaption)galleryLightboxCaption.textContent=item.caption;
-    if(galleryLightboxCounter)galleryLightboxCounter.textContent=`${galleryIndex+1} / ${galleryData.length}`;
-    galleryLightboxImage.classList.remove("is-changing");
-    preloadAdjacentGalleryImages();
-  },120);
-}
-function openGallery(index=0){
-  if(!galleryLightbox||!galleryData.length)return;
-  galleryIndex=(index+galleryData.length)%galleryData.length;
-  renderGalleryImage();
-  galleryLightbox.classList.add("is-open");
-  galleryLightbox.setAttribute("aria-hidden","false");
-  document.body.classList.add("lightbox-open");
-  galleryClose?.focus();
-}
-function closeGallery(){
-  galleryLightbox?.classList.remove("is-open");
-  galleryLightbox?.setAttribute("aria-hidden","true");
-  document.body.classList.remove("lightbox-open");
-  galleryItems[galleryIndex]?.focus();
-}
-function moveGallery(direction){
-  if(!galleryData.length)return;
-  galleryIndex=(galleryIndex+direction+galleryData.length)%galleryData.length;
-  renderGalleryImage();
-}
-galleryClose?.addEventListener("click",closeGallery);
-galleryPrev?.addEventListener("click",()=>moveGallery(-1));
-galleryNext?.addEventListener("click",()=>moveGallery(1));
-galleryLightbox?.addEventListener("click",(event)=>{if(event.target===galleryLightbox)closeGallery();});
-galleryLightbox?.addEventListener("touchstart",(event)=>{galleryTouchStartX=event.changedTouches[0]?.clientX||0;},{passive:true});
-galleryLightbox?.addEventListener("touchend",(event)=>{
-  const endX=event.changedTouches[0]?.clientX||0;
-  const distance=endX-galleryTouchStartX;
-  if(Math.abs(distance)>45)moveGallery(distance<0?1:-1);
-},{passive:true});
-document.addEventListener("keydown",(event)=>{
-  if(!galleryLightbox?.classList.contains("is-open"))return;
-  if(event.key==="Escape")closeGallery();
-  if(event.key==="ArrowLeft")moveGallery(-1);
-  if(event.key==="ArrowRight")moveGallery(1);
-});
-
-loadGalleryManifest();
+// Gallery V5.3 is loaded from gallery.js.
 
 // Floating music control with smooth fades
 const backgroundMusic=document.getElementById("backgroundMusic");
