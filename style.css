@@ -1404,3 +1404,44 @@ body.lightbox-open {
 .gallery-status.is-empty { font-style: italic; }
 .gallery-status.is-error { color: rgba(255, 225, 190, 0.9); }
 .gallery-item.is-unavailable { display: none; }
+
+
+/* =========================================================
+   V5.3.1 — direct-link and gallery reveal reliability fix
+   ========================================================= */
+
+/* A section opened through a URL hash must never stay transparent. */
+.glass-section:target {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The section's staggered children must also be revealed. */
+.glass-section:target > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Keep the generated gallery grid in normal document flow. */
+#gallery-grid {
+  align-self: stretch;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Gallery cards and loaded thumbnails must remain paintable even if
+   another global animation rule is interrupted. */
+#gallery-grid .gallery-card {
+  visibility: visible;
+}
+
+#gallery-grid .gallery-card:not(.is-loading) img {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Fail open for browsers where content-visibility and hash navigation
+   interact poorly. */
+#gallery:target {
+  content-visibility: visible;
+}

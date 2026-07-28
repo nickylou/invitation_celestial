@@ -3,7 +3,7 @@ const world = document.getElementById("world");
 const sky = document.getElementById("sky");
 
 let hasEntered = false;
-let currentSky = "skyOri";
+let currentSky = "original";
 
 const skies = {
   capricorn: "assets/sky-capricorn.jpg",
@@ -100,6 +100,21 @@ sections.forEach((section) => {
   revealObserver.observe(section);
   skyObserver.observe(section);
 });
+
+/* Ensure direct links such as #gallery are revealed even before
+   IntersectionObserver has a chance to run. */
+function revealHashTarget() {
+  const target = window.location.hash
+    ? document.querySelector(window.location.hash)
+    : null;
+
+  if (target?.matches("[data-sky]")) {
+    target.classList.add("is-visible");
+  }
+}
+
+revealHashTarget();
+window.addEventListener("hashchange", revealHashTarget);
 
 const INVITATION_CONFIG = window.INVITATION_CONFIG || {};
 const countdownEl = document.getElementById("countdown");
