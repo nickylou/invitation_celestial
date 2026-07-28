@@ -1,117 +1,364 @@
 (() => {
   const MANIFEST_URL = "assets/gallery/gallery.json";
   const BASE = "assets/gallery/";
-  const grid = document.getElementById("gallery-grid");
+
   const status = document.getElementById("gallery-status");
+  const slider = document.getElementById("gallery-slider");
+  const slideButton = document.getElementById("gallery-slide-button");
+  const slideImage = document.getElementById("gallery-slide-image");
+  const slideCaption = document.getElementById("gallery-slide-caption");
+  const slideCounter = document.getElementById("gallery-slide-counter");
+  const slideSpinner = document.getElementById("gallery-slide-spinner");
+  const inlineFilmstrip = document.getElementById("gallery-filmstrip-inline");
+  const sliderPrev = document.getElementById("gallery-slider-prev");
+  const sliderNext = document.getElementById("gallery-slider-next");
+
   const lightbox = document.getElementById("gallery-lightbox");
-  if (!grid || !lightbox) return;
+  const lightboxImage = document.getElementById("gallery-lightbox-image");
+  const lightboxCaption = document.getElementById("gallery-lightbox-caption");
+  const lightboxCounter = document.getElementById("gallery-lightbox-counter");
+  const lightboxSpinner = document.getElementById("gallery-spinner");
+  const lightboxFilmstrip = document.getElementById("gallery-filmstrip");
+  const lightboxPrev = lightbox?.querySelector(".gallery-lightbox-prev");
+  const lightboxNext = lightbox?.querySelector(".gallery-lightbox-next");
 
-  const image = document.getElementById("gallery-lightbox-image");
-  const caption = document.getElementById("gallery-lightbox-caption");
-  const counter = document.getElementById("gallery-lightbox-counter");
-  const spinner = document.getElementById("gallery-spinner");
-  const filmstrip = document.getElementById("gallery-filmstrip");
-  const prev = lightbox.querySelector(".gallery-lightbox-prev");
-  const next = lightbox.querySelector(".gallery-lightbox-next");
-  let photos = [], index = 0, lastTrigger = null;
-  let startX = 0, startY = 0, scale = 1, panX = 0, panY = 0, dragging = false;
+  if (!status || !slider || !slideButton || !slideImage || !inlineFilmstrip || !lightbox) return;
 
-  const resolve = p => /^(https?:|data:|\/)/.test(p) ? p : BASE + p.replace(/^\.\//, "");
-  const title = p => p.split("/").pop().replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
-  function normalise(entry, i) {
+  let photos = [];
+  let index = 0;
+  let lastTrigger = null;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let scale = 1;
+  let panX = 0;
+  let panY = 0;
+  let dragging = false;
+
+  const resolve = (path) =>
+    /^(https?:|data:|\/)/.test(path)
+      ? path
+      : BASE + path.replace(/^\.\//, "");
+
+  const title = (path) =>
+    path
+      .split("/")
+      .pop()
+      .replace(/\.[^.]+$/, "")
+      .replace(/[-_]+/g, " ");
+
+  function normalise(entry, photoIndex) {
     if (typeof entry === "string") entry = { full: entry, thumb: entry };
     if (!entry || !(entry.full || entry.file)) return null;
+
     const full = entry.full || entry.file;
-    return { full: resolve(full), thumb: resolve(entry.thumb || full), caption: String(entry.caption || ""), alt: String(entry.alt || `Wedding photograph ${i + 1}: ${title(full)}`), width: Number(entry.width)||0, height: Number(entry.height)||0 };
+    return {
+      full: resolve(full),
+      thumb: resolve(entry.thumb || full),
+      caption: String(entry.caption || ""),
+      alt: String(
+        entry.alt ||
+        `Wedding photograph ${photoIndex + 1}: ${title(full)}`
+      ),
+      width: Number(entry.width) || 0,
+      height: Number(entry.height) || 0
+    };
   }
 
-  function skeleton(item, i) {
-    const button = document.createElement("button");
-    button.type = "button"; button.className = "gallery-card is-loading";
-    button.setAttribute("aria-label", `Open photo ${i + 1}`);
-    if (item.width && item.height) button.style.aspectRatio = `${item.width}/${item.height}`;
-    const img = document.createElement("img");
-    img.alt = item.alt; img.loading = "lazy"; img.decoding = "async";
-    img.dataset.src = item.thumb;
-    img.addEventListener("load", () => button.classList.remove("is-loading"), {once:true});
-    img.addEventListener("error", () => button.classList.add("is-error"), {once:true});
-    button.append(img); button.addEventListener("click", () => open(i, button));
-    return button;
+  function preloadAdjacent(currentIndex) {
+    [-1, 1].forEach((offset) => {
+      const photo = photos[(currentIndex + offset + photos.length) % photos.length];
+      if (!photo) return;
+      const preload = new Image();
+      preload.decoding = "async";
+      preload.src = photo.full;
+    });
   }
 
-  const lazyObserver = "IntersectionObserver" in window ? new IntersectionObserver(entries => entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const img = e.target;
-    if (img.dataset.src) {
-      img.src = img.dataset.src;
-      delete img.dataset.src;
+  function updateFilmstripActive(container) {
+    container?.querySelectorAll(".filmstrip-item").forEach((item, itemIndex) => {
+      const active = itemIndex === index;
+      item.classList.toggle("is-active", active);
+      item.setAttribute("aria-current", active ? "true" : "false");
+    });
+
+    container
+      ?.querySelector(".filmstrip-item.is-active")
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
+
+  function showSlide(newIndex, options = {}) {
+    if (!photos.length) return;
+
+    index = (newIndex + photos.length) % photos.length;
+    const photo = photos[index];
+
+    slideSpinner.classList.add("is-active");
+    slideImage.classList.add("is-loading");
+
+    const loader = new Image();
+    loader.decoding = "async";
+    loader.onload = () => {
+      slideImage.src = photo.full;
+      slideImage.alt = photo.alt;
+      slideImage.classList.remove("is-loading");
+      slideSpinner.classList.remove("is-active");
+    };
+    loader.onerror = () => {
+      slideSpinner.classList.remove("is-active");
+      slideImage.classList.remove("is-loading");
+      status.textContent = "This photo could not be loaded.";
+    };
+    loader.src = photo.full;
+
+    slideCaption.textContent = photo.caption;
+    slideCaption.hidden = !photo.caption;
+    slideCounter.textContent = `${index + 1} / ${photos.length}`;
+
+    updateFilmstripActive(inlineFilmstrip);
+    if (options.updateLightbox) updateLightboxContent();
+    preloadAdjacent(index);
+  }
+
+  function buildFilmstrip(container, openInLightbox = false) {
+    const fragment = document.createDocumentFragment();
+
+    photos.forEach((photo, photoIndex) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "filmstrip-item";
+      button.setAttribute("aria-label", `View photo ${photoIndex + 1}`);
+
+      const img = document.createElement("img");
+      img.src = photo.thumb;
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      button.append(img);
+      button.addEventListener("click", () => {
+        showSlide(photoIndex);
+        if (openInLightbox) updateLightboxContent();
+      });
+
+      fragment.append(button);
+    });
+
+    container.replaceChildren(fragment);
+    updateFilmstripActive(container);
+  }
+
+  function moveSlide(direction) {
+    showSlide(index + direction, {
+      updateLightbox: lightbox.classList.contains("is-open")
+    });
+  }
+
+  function handleSwipeEnd(event, callback) {
+    if (!event.changedTouches?.length) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    if (Math.abs(deltaX) > 55 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      callback(deltaX < 0 ? 1 : -1);
     }
-    lazyObserver.unobserve(img);
-  }), {rootMargin:"500px 0px"}) : null;
+  }
 
-  async function load() {
+  function resetTransform() {
+    scale = 1;
+    panX = 0;
+    panY = 0;
+    applyTransform();
+  }
+
+  function applyTransform() {
+    lightboxImage.style.transform =
+      `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
+  }
+
+  function updateLightboxContent() {
+    if (!photos.length) return;
+    const photo = photos[index];
+
+    resetTransform();
+    lightboxSpinner.classList.add("is-active");
+    lightboxImage.classList.add("is-loading");
+
+    const loader = new Image();
+    loader.decoding = "async";
+    loader.onload = () => {
+      lightboxImage.src = photo.full;
+      lightboxImage.alt = photo.alt;
+      lightboxImage.classList.remove("is-loading");
+      lightboxSpinner.classList.remove("is-active");
+    };
+    loader.onerror = () => {
+      lightboxSpinner.classList.remove("is-active");
+      lightboxImage.classList.remove("is-loading");
+    };
+    loader.src = photo.full;
+
+    lightboxCaption.textContent = photo.caption;
+    lightboxCaption.hidden = !photo.caption;
+    lightboxCounter.textContent = `${index + 1} / ${photos.length}`;
+    updateFilmstripActive(lightboxFilmstrip);
+    preloadAdjacent(index);
+  }
+
+  function openLightbox(trigger) {
+    lastTrigger = trigger;
+    updateLightboxContent();
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lightbox-open");
+    lightbox.querySelector(".gallery-lightbox-close")?.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lightbox-open");
+    resetTransform();
+    lastTrigger?.focus();
+  }
+
+  async function loadGallery() {
     try {
-      const response = await fetch(MANIFEST_URL, {cache:"no-cache"});
+      const response = await fetch(MANIFEST_URL, { cache: "no-cache" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
       const json = await response.json();
       const entries = Array.isArray(json) ? json : json.images;
       photos = entries.map(normalise).filter(Boolean);
-      const fragment=document.createDocumentFragment();
-      photos.forEach((p,i)=>fragment.append(skeleton(p,i))); grid.replaceChildren(fragment);
-      const lazyImages = [...grid.querySelectorAll("img[data-src]")];
 
-      lazyImages.forEach((img, imageIndex) => {
-        const assignSource = () => {
-          if (!img.dataset.src) return;
-          img.src = img.dataset.src;
-          delete img.dataset.src;
-        };
+      if (!photos.length) {
+        status.textContent = "More moments will be added soon.";
+        slider.hidden = true;
+        inlineFilmstrip.hidden = true;
+        return;
+      }
 
-        // Render the first screen immediately. Remaining thumbnails are
-        // observed, with a guaranteed fallback for browser edge cases.
-        if (imageIndex < 12 || !lazyObserver) {
-          assignSource();
-        } else {
-          lazyObserver.observe(img);
-          window.setTimeout(assignSource, 1800 + imageIndex * 15);
-        }
-      });
-      status.textContent = photos.length ? `${photos.length} moments in our gallery.` : "More moments will be added soon.";
-      buildFilmstrip();
+      status.textContent = `${photos.length} moments in our gallery.`;
+      buildFilmstrip(inlineFilmstrip);
+      buildFilmstrip(lightboxFilmstrip, true);
+      showSlide(0);
     } catch (error) {
       console.error("Gallery manifest failed:", error);
-      status.className="gallery-status is-error";
-      status.innerHTML="<span aria-hidden='true'>✨</span><br>Our gallery is currently unavailable.<br><small>Please refresh in a moment.</small>";
+      status.className = "gallery-status is-error";
+      status.innerHTML =
+        "<span aria-hidden='true'>✨</span><br>Our gallery is currently unavailable.<br><small>Please refresh in a moment.</small>";
+      slider.hidden = true;
+      inlineFilmstrip.hidden = true;
     }
   }
 
-  function buildFilmstrip(){
-    const fragment=document.createDocumentFragment();
-    photos.forEach((p,i)=>{const b=document.createElement("button");b.type="button";b.className="filmstrip-item";b.setAttribute("aria-label",`View photo ${i+1}`);const im=document.createElement("img");im.src=p.thumb;im.alt="";im.loading="lazy";b.append(im);b.addEventListener("click",()=>show(i));fragment.append(b);});filmstrip.replaceChildren(fragment);
-  }
-  function resetTransform(){scale=1;panX=panY=0;applyTransform();}
-  function applyTransform(){image.style.transform=`translate3d(${panX}px,${panY}px,0) scale(${scale})`;}
-  function preload(i){[-1,1].forEach(d=>{const p=photos[(i+d+photos.length)%photos.length];if(p){const im=new Image();im.src=p.full;}});}
-  function show(i){
-    index=(i+photos.length)%photos.length; const p=photos[index]; if(!p)return;
-    resetTransform(); spinner.classList.add("is-active"); image.classList.add("is-loading");
-    const loader=new Image(); loader.decoding="async"; loader.onload=()=>{image.src=p.full;image.alt=p.alt;image.classList.remove("is-loading");spinner.classList.remove("is-active");}; loader.onerror=()=>{spinner.classList.remove("is-active");image.classList.remove("is-loading");}; loader.src=p.full;
-    caption.textContent=p.caption; caption.hidden=!p.caption; counter.textContent=`${index+1} / ${photos.length}`;
-    filmstrip.querySelectorAll(".filmstrip-item").forEach((el,j)=>el.classList.toggle("is-active",j===index));
-    filmstrip.querySelector(".is-active")?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"}); preload(index);
-  }
-  function open(i,trigger){lastTrigger=trigger;show(i);lightbox.classList.add("is-open");lightbox.setAttribute("aria-hidden","false");document.body.classList.add("lightbox-open");lightbox.querySelector(".gallery-lightbox-close")?.focus();}
-  function close(){lightbox.classList.remove("is-open");lightbox.setAttribute("aria-hidden","true");document.body.classList.remove("lightbox-open");resetTransform();lastTrigger?.focus();}
-  const move=d=>show(index+d);
+  sliderPrev.addEventListener("click", () => moveSlide(-1));
+  sliderNext.addEventListener("click", () => moveSlide(1));
+  slideButton.addEventListener("click", () => openLightbox(slideButton));
 
-  lightbox.querySelectorAll("[data-gallery-close]").forEach(el=>el.addEventListener("click",close)); prev.addEventListener("click",()=>move(-1)); next.addEventListener("click",()=>move(1));
-  document.addEventListener("keydown",e=>{if(!lightbox.classList.contains("is-open"))return;if(e.key==="Escape")close();if(e.key==="ArrowLeft")move(-1);if(e.key==="ArrowRight")move(1);if(e.key==="Home")show(0);if(e.key==="End")show(photos.length-1);});
-  lightbox.addEventListener("touchstart",e=>{if(e.touches.length===1){startX=e.touches[0].clientX;startY=e.touches[0].clientY;}},{passive:true});
-  lightbox.addEventListener("touchend",e=>{if(scale>1)return;const t=e.changedTouches[0],dx=t.clientX-startX,dy=t.clientY-startY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))move(dx<0?1:-1);},{passive:true});
-  image.addEventListener("dblclick",()=>{scale=scale===1?2:1;panX=panY=0;applyTransform();});
-  image.addEventListener("wheel",e=>{if(!lightbox.classList.contains("is-open"))return;e.preventDefault();scale=Math.min(4,Math.max(1,scale+(e.deltaY<0?.25:-.25)));if(scale===1)panX=panY=0;applyTransform();},{passive:false});
-  image.addEventListener("pointerdown",e=>{if(scale<=1)return;dragging=true;startX=e.clientX-panX;startY=e.clientY-panY;image.setPointerCapture(e.pointerId);});
-  image.addEventListener("pointermove",e=>{if(!dragging)return;panX=e.clientX-startX;panY=e.clientY-startY;applyTransform();});
-  image.addEventListener("pointerup",()=>dragging=false); image.addEventListener("pointercancel",()=>dragging=false);
-  load();
+  slider.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length !== 1) return;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  slider.addEventListener(
+    "touchend",
+    (event) => handleSwipeEnd(event, moveSlide),
+    { passive: true }
+  );
+
+  lightbox.querySelectorAll("[data-gallery-close]").forEach((element) => {
+    element.addEventListener("click", closeLightbox);
+  });
+
+  lightboxPrev?.addEventListener("click", () => moveSlide(-1));
+  lightboxNext?.addEventListener("click", () => moveSlide(1));
+
+  document.addEventListener("keydown", (event) => {
+    if (lightbox.classList.contains("is-open")) {
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") moveSlide(-1);
+      if (event.key === "ArrowRight") moveSlide(1);
+      if (event.key === "Home") showSlide(0, { updateLightbox: true });
+      if (event.key === "End") showSlide(photos.length - 1, { updateLightbox: true });
+      return;
+    }
+
+    if (window.location.hash === "#gallery") {
+      if (event.key === "ArrowLeft") moveSlide(-1);
+      if (event.key === "ArrowRight") moveSlide(1);
+    }
+  });
+
+  lightbox.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length !== 1) return;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  lightbox.addEventListener(
+    "touchend",
+    (event) => {
+      if (scale > 1) return;
+      handleSwipeEnd(event, moveSlide);
+    },
+    { passive: true }
+  );
+
+  lightboxImage.addEventListener("dblclick", () => {
+    scale = scale === 1 ? 2 : 1;
+    panX = 0;
+    panY = 0;
+    applyTransform();
+  });
+
+  lightboxImage.addEventListener(
+    "wheel",
+    (event) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      event.preventDefault();
+      scale = Math.min(4, Math.max(1, scale + (event.deltaY < 0 ? 0.25 : -0.25)));
+      if (scale === 1) {
+        panX = 0;
+        panY = 0;
+      }
+      applyTransform();
+    },
+    { passive: false }
+  );
+
+  lightboxImage.addEventListener("pointerdown", (event) => {
+    if (scale <= 1) return;
+    dragging = true;
+    touchStartX = event.clientX - panX;
+    touchStartY = event.clientY - panY;
+    lightboxImage.setPointerCapture(event.pointerId);
+  });
+
+  lightboxImage.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    panX = event.clientX - touchStartX;
+    panY = event.clientY - touchStartY;
+    applyTransform();
+  });
+
+  lightboxImage.addEventListener("pointerup", () => {
+    dragging = false;
+  });
+
+  lightboxImage.addEventListener("pointercancel", () => {
+    dragging = false;
+  });
+
+  loadGallery();
 })();

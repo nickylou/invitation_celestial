@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nicky & Gina Wedding Invitation</title>
-  <link rel="stylesheet" href="style.css?v=5.3.2" />
-  <link rel="stylesheet" href="gallery.css?v=5.3.2" />
+  <link rel="stylesheet" href="style.css?v=5.3" />
+  <link rel="stylesheet" href="gallery.css?v=5.4" />
 </head>
 <body>
   <section id="landing" aria-label="Opening screen">
@@ -75,10 +75,24 @@
     <section id="gallery" class="glass-section gallery-section" data-sky="original">
       <p class="section-kicker">Moments beneath our stars</p>
       <h2>Our Gallery</h2>
-      <p class="gallery-intro">Tap a picture to view it full screen. Swipe left or right on mobile to move between moments.</p>
+      <p class="gallery-intro">Use the arrows or swipe left and right to move between our moments.</p>
 
       <p id="gallery-status" class="gallery-status" role="status" aria-live="polite">Loading our moments…</p>
-      <div id="gallery-grid" class="gallery-grid" aria-label="Wedding photo gallery"></div>
+
+      <div id="gallery-slider" class="gallery-slider" aria-label="Wedding photo slider">
+        <button id="gallery-slider-prev" class="gallery-slider-arrow gallery-slider-prev" type="button" aria-label="Previous photo">&#10094;</button>
+
+        <button id="gallery-slide-button" class="gallery-slide-button" type="button" aria-label="Open current photo full screen">
+          <div id="gallery-slide-spinner" class="gallery-slide-spinner" aria-hidden="true"></div>
+          <img id="gallery-slide-image" src="" alt="" draggable="false" decoding="async" />
+          <span id="gallery-slide-caption" class="gallery-slide-caption" hidden></span>
+          <span id="gallery-slide-counter" class="gallery-slide-counter" aria-live="polite"></span>
+        </button>
+
+        <button id="gallery-slider-next" class="gallery-slider-arrow gallery-slider-next" type="button" aria-label="Next photo">&#10095;</button>
+      </div>
+
+      <div id="gallery-filmstrip-inline" class="gallery-filmstrip gallery-filmstrip-inline" aria-label="Gallery thumbnail navigation"></div>
     </section>
 
 	<section id="wedding" class="glass-section" data-sky="libra">
@@ -203,8 +217,8 @@
     <span class="music-label">Music</span>
   </button>
 
-  <script src="config.js?v=5.3.2"></script>
-  <script src="app.js?v=5.3.2"></script>
-  <script src="gallery.js?v=5.3.2" defer></script>
+  <script src="config.js?v=5.3"></script>
+  <script src="app.js?v=5.3"></script>
+  <script src="gallery.js?v=5.4" defer></script>
 </body>
 </html>
