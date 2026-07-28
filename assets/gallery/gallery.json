@@ -1,24 +1,10 @@
 [
   {
-    "thumb": "thumbs/01-our-portrait.webp",
-    "full": "full/01-our-portrait.png",
-    "caption": "",
-    "width": 932,
-    "height": 1400
-  },
-  {
     "thumb": "thumbs/001.webp",
     "full": "full/001.jpg",
     "caption": "",
     "width": 6240,
     "height": 4160
-  },
-  {
-    "thumb": "thumbs/02-our-night-sky.webp",
-    "full": "full/02-our-night-sky.jpg",
-    "caption": "",
-    "width": 1672,
-    "height": 941
   },
   {
     "thumb": "thumbs/002.webp",
