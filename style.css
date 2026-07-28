@@ -1461,51 +1461,37 @@ body.lightbox-open {
 }
 
 
-/* V5.4.1 — reception details and compact gallery */
-.reception-details {
-  display: grid;
-  gap: 13px;
-  width: min(100%, 470px);
-  margin: 4px auto 30px;
-  text-align: left;
+/* =========================================================
+   V5.4.2 — five-button navigation layout
+   ========================================================= */
+.nav-cards {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
 }
 
-.reception-detail {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin: 0;
-  color: rgba(244, 246, 250, .92);
-  font-family: Arial, sans-serif;
-  font-size: clamp(15px, 2.5vw, 18px);
-  line-height: 1.45 !important;
-  opacity: 1 !important;
-}
+/* Desktop: three cards on the first row, two centred below. */
+.nav-cards .nav-card:nth-child(1) { grid-column: 1 / span 2; }
+.nav-cards .nav-card:nth-child(2) { grid-column: 3 / span 2; }
+.nav-cards .nav-card:nth-child(3) { grid-column: 5 / span 2; }
+.nav-cards .nav-card:nth-child(4) { grid-column: 2 / span 2; }
+.nav-cards .nav-card:nth-child(5) { grid-column: 4 / span 2; }
 
-.reception-detail-icon {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  color: #f3f5f8;
-  filter: drop-shadow(0 0 7px rgba(216,181,109,.18));
-}
+@media (max-width: 768px) {
+  .nav-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 
-.reception-detail-icon svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+  .nav-cards .nav-card:nth-child(1),
+  .nav-cards .nav-card:nth-child(2),
+  .nav-cards .nav-card:nth-child(3),
+  .nav-cards .nav-card:nth-child(4),
+  .nav-cards .nav-card:nth-child(5) {
+    grid-column: auto;
+  }
 
-#gallery .gallery-intro {
-  margin-bottom: 10px;
-}
-
-#gallery-status[hidden] {
-  display: none !important;
+  /* Keep the final Gallery button aligned to the left column. */
+  .nav-cards .nav-card:nth-child(5) {
+    grid-column: 1;
+  }
 }

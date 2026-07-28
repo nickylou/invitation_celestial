@@ -233,21 +233,18 @@
       photos = entries.map(normalise).filter(Boolean);
 
       if (!photos.length) {
-        status.hidden = false;
         status.textContent = "More moments will be added soon.";
         slider.hidden = true;
         inlineFilmstrip.hidden = true;
         return;
       }
 
-      status.hidden = true;
-      status.textContent = "";
+      status.textContent = `${photos.length} moments in our gallery.`;
       buildFilmstrip(inlineFilmstrip);
       buildFilmstrip(lightboxFilmstrip, true);
       showSlide(0);
     } catch (error) {
       console.error("Gallery manifest failed:", error);
-      status.hidden = false;
       status.className = "gallery-status is-error";
       status.innerHTML =
         "<span aria-hidden='true'>✨</span><br>Our gallery is currently unavailable.<br><small>Please refresh in a moment.</small>";

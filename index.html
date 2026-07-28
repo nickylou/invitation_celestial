@@ -1,175 +1,224 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Nicky &amp; Gina Wedding Invitation</title>
-<link href="style.css?v=5.4.1" rel="stylesheet"/>
-<link href="gallery.css?v=5.4.1" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicky & Gina Wedding Invitation</title>
+  <link rel="stylesheet" href="style.css?v=5.4.2" />
+  <link rel="stylesheet" href="gallery.css?v=5.4.2" />
 </head>
 <body>
-<section aria-label="Opening screen" id="landing">
-<div class="hero-image"></div>
-<div class="hero-ripple"></div>
-<div class="hero-glow"></div>
-<div class="dark-vignette"></div>
-<div class="cta-layer">
-<p class="guest-greeting" hidden="" id="guestGreeting"></p>
-<button aria-label="Enter our night sky and open the wedding invitation" class="enter-button" id="enterInvitation" type="button">
-<span>Enter Our Night Sky</span>
-</button>
-<div aria-hidden="true" class="tap-guidance">
-<span class="tap-ripple"></span>
-<svg class="tap-icon" role="img" viewbox="0 0 32 40">
-<path d="M15.8 3.5c-2 0-3.6 1.6-3.6 3.6v11.6l-1.7-2.2a3.5 3.5 0 0 0-5.5 4.3l7.2 9.2a8.5 8.5 0 0 0 6.7 3.3h1.4a8.4 8.4 0 0 0 8.4-8.4V15a3.4 3.4 0 0 0-5.8-2.4 3.5 3.5 0 0 0-5.7-1.5v-4c0-2-1.5-3.6-3.4-3.6Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path>
-</svg>
-<p class="tap-helper">Tap to open your invitation</p>
-</div>
-</div>
-</section>
-<main id="world">
-<div class="sky-active" id="sky"></div>
-<div class="sky-soft-overlay"></div>
-<div class="star-field-foreground"></div>
-<div class="aurora-glow"></div>
-<div class="floating-particles"></div>
-<section class="ultra-hero" data-sky="original">
-<p class="eyebrow">The Wedding of</p>
-<h1>Nicky <span>&amp;</span> Gina</h1>
-<p class="date">11 October 2026 · MDC Hall Jakarta</p>
-<div class="hero-divider"></div>
-<div class="nav-cards"><a class="nav-card" href="#couple"><span>The Couple</span></a><a class="nav-card" href="#wedding"><span>Wedding Reception</span></a><a class="nav-card" href="#location"><span>Location</span></a><a class="nav-card" href="#rsvp"><span>RSVP</span></a><a class="nav-card" href="#gallery"><span>Gallery</span></a><a class="nav-card" href="#wedding-day"><span>Wedding Day</span></a></div>
-</section><section class="glass-section" data-sky="capricorn" id="couple">
-<h2>The Couple</h2>
-<div class="couple-container">
-<button aria-label="View full-size photo of Nicky and Gina" class="couple-photo-button" type="button">
-<img alt="Nicky &amp; Gina" class="couple-photo" decoding="async" loading="lazy" src="assets/Couple.png"/>
-</button>
-<h3>Nicky &amp; Gina</h3>
-<p class="parents">
-		  Son of Mr. [Father Name] &amp; Mrs. [Mother Name]<br/>
-		  Daughter of Mr. [Father Name] &amp; Mrs. [Mother Name]
+  <section id="landing" aria-label="Opening screen">
+    <div class="hero-image"></div>
+    <div class="hero-ripple"></div>
+    <div class="hero-glow"></div>
+    <div class="dark-vignette"></div>
+
+    <div class="cta-layer">
+      <p id="guestGreeting" class="guest-greeting" hidden></p>
+      <button id="enterInvitation" class="enter-button" type="button" aria-label="Enter our night sky and open the wedding invitation">
+        <span>Enter Our Night Sky</span>
+      </button>
+
+      <div class="tap-guidance" aria-hidden="true">
+        <span class="tap-ripple"></span>
+        <svg class="tap-icon" viewBox="0 0 32 40" role="img">
+          <path d="M15.8 3.5c-2 0-3.6 1.6-3.6 3.6v11.6l-1.7-2.2a3.5 3.5 0 0 0-5.5 4.3l7.2 9.2a8.5 8.5 0 0 0 6.7 3.3h1.4a8.4 8.4 0 0 0 8.4-8.4V15a3.4 3.4 0 0 0-5.8-2.4 3.5 3.5 0 0 0-5.7-1.5v-4c0-2-1.5-3.6-3.4-3.6Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p class="tap-helper">Tap to open your invitation</p>
+      </div>
+    </div>
+  </section>
+
+  <main id="world">
+    <div id="sky" class="sky-active"></div>
+    <div class="sky-soft-overlay"></div>
+    <div class="star-field-foreground"></div>
+    <div class="aurora-glow"></div>
+    <div class="floating-particles"></div>
+
+    <section class="ultra-hero" data-sky="original">
+      <p class="eyebrow">The Wedding of</p>
+      <h1>Nicky <span>&</span> Gina</h1>
+      <p class="date">11 October 2026 · MDC Hall Jakarta</p>
+
+      <div class="hero-divider"></div>
+
+      <div class="nav-cards">
+        <a href="#couple" class="nav-card"><span>The Couple</span></a>
+        <a href="#wedding" class="nav-card"><span>Wedding Reception</span></a>
+        <a href="#location" class="nav-card"><span>Location</span></a>
+        <a href="#rsvp" class="nav-card"><span>RSVP</span></a>
+        <a href="#gallery" class="nav-card"><span>Gallery</span></a>
+      </div>
+    </section>
+
+    <section id="couple" class="glass-section" data-sky="capricorn">
+	  <h2>The Couple</h2>
+
+	  <div class="couple-container">
+		<button class="couple-photo-button" type="button" aria-label="View full-size photo of Nicky and Gina">
+          <img src="assets/Couple.png" alt="Nicky & Gina" class="couple-photo" loading="lazy" decoding="async"/>
+        </button>
+
+		<h3>Nicky & Gina</h3>
+
+		<p class="parents">
+		  Son of Mr. [Father Name] & Mrs. [Mother Name]<br/>
+		  Daughter of Mr. [Father Name] & Mrs. [Mother Name]
 		</p>
-</div>
-</section><section class="glass-section" data-sky="libra" id="wedding">
-<h2>Wedding Reception</h2>
+	  </div>
+	</section>
 
 
+    <section id="gallery" class="glass-section gallery-section" data-sky="original">
+      <p class="section-kicker">Gallery</p>
+	  <h2>Moments beneath our stars</h2>
+      <p class="gallery-intro">Use the arrows or swipe left and right</p>
+      <p id="gallery-status" class="gallery-status" role="status" aria-live="polite">Loading our moments…</p>
+
+      <div id="gallery-slider" class="gallery-slider" aria-label="Wedding photo slider">
+        <button id="gallery-slider-prev" class="gallery-slider-arrow gallery-slider-prev" type="button" aria-label="Previous photo">&#10094;</button>
+
+        <button id="gallery-slide-button" class="gallery-slide-button" type="button" aria-label="Open current photo full screen">
+          <div id="gallery-slide-spinner" class="gallery-slide-spinner" aria-hidden="true"></div>
+          <img id="gallery-slide-image" src="" alt="" draggable="false" decoding="async" />
+          <span id="gallery-slide-caption" class="gallery-slide-caption" hidden></span>
+          <span id="gallery-slide-counter" class="gallery-slide-counter" aria-live="polite"></span>
+        </button>
+
+        <button id="gallery-slider-next" class="gallery-slider-arrow gallery-slider-next" type="button" aria-label="Next photo">&#10095;</button>
+      </div>
+
+      <div id="gallery-filmstrip-inline" class="gallery-filmstrip gallery-filmstrip-inline" aria-label="Gallery thumbnail navigation"></div>
+    </section>
+
+	<section id="wedding" class="glass-section" data-sky="libra">
+	  <h2>Wedding Reception</h2>
+
+	  <p id="wedding-date-label">Sunday, 11 October 2026</p>
+	  <p id="wedding-time-label">18:30 – 20:30 WIB</p>
+	  <p id="wedding-venue-label">MDC Hall Jakarta</p>
+	  
+	  <h2></h2>
+	  <h3>Countdown</h3>
+      <div id="countdown" class="countdown-grid"></div>
+	  
+	</section>
 
 
-<div class="reception-details"><p class="reception-detail"><span class="reception-detail-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7 2v3M17 2v3M3.5 9h17M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"></path><path d="m8.5 14 2 2 5-5"></path></svg></span><span id="wedding-date-label">Sunday, 11 October 2026</span></p><p class="reception-detail"><span class="reception-detail-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 21h16M6 21V9h12v12M3 9l9-6 9 6M9 13h2v3H9zM13 13h2v3h-2z"></path></svg></span><span id="wedding-venue-label">MDC Hall Jakarta</span></p><p class="reception-detail"><span class="reception-detail-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><span id="wedding-time-label">18:30 – 20:30 WIB</span></p></div><h3>Countdown</h3>
-<div class="countdown-grid" id="countdown"></div>
-</section><section class="glass-section" data-sky="virgo" id="location">
-<h2>Location</h2>
-<div class="map-container">
-<iframe allowfullscreen="" height="300" loading="lazy" src="https://www.google.com/maps?q=MDC+Hall+Jakarta&amp;output=embed" style="border:0; border-radius:20px;" width="100%">
-</iframe>
-</div>
-</section><section class="glass-section" data-sky="scorpio" id="rsvp">
-<h2 id="rsvp-title">RSVP</h2>
-<p class="rsvp-closed-notice" hidden="" id="rsvp-closed-notice">RSVP submissions are now closed, but you can still read the wishes left in our guestbook.</p>
-<form id="rsvp-form" novalidate="">
-<label class="sr-only" for="name">Your name</label>
-<input autocomplete="name" class="input" id="name" maxlength="80" placeholder="Your Name" required="" type="text"/>
-<div class="form-group">
-<p class="form-question">Will you attend?</p>
-<div aria-label="Attendance" class="radio-group" role="radiogroup">
-<label class="radio-option">
-<input name="attendance" required="" type="radio" value="accept"/>
-<span>Yes</span>
-</label>
-<label class="radio-option">
-<input name="attendance" required="" type="radio" value="decline"/>
-<span>No, sorry</span>
-</label>
-</div>
-</div>
-<label class="sr-only" for="guestCount">Number of guests including you</label>
-<input class="input" id="guestCount" inputmode="numeric" max="20" min="1" placeholder="Number of guests (including you)" required="" type="number"/>
-<label class="sr-only" for="message">Message or wishes</label>
-<textarea class="message-input" id="message" maxlength="500" placeholder="Leave your wishes..."></textarea>
-<p aria-live="polite" class="rsvp-status" id="rsvp-status" role="status"></p>
-<button class="ultra-btn" id="rsvp-submit" type="submit"><span>Submit RSVP</span></button>
-</form>
-<div class="guestbook" hidden="" id="message-board">
-<div class="message-board-heading">
-<div>
-<p class="guestbook-kicker">Written among the stars</p>
-<h3>Guestbook</h3>
-<p class="guestbook-count" id="guestbook-count">Wishes from our family and friends</p>
-</div>
-<button aria-label="Refresh guestbook messages" class="message-refresh" id="refresh-messages" type="button">Refresh</button>
-</div>
-<p aria-live="polite" class="messages-status" id="messages-status" role="status">Loading guestbook…</p>
-<div class="guestbook-grid" id="messages-list"></div>
-</div>
-</section><section class="glass-section gallery-section" data-sky="original" id="gallery">
-<p class="section-kicker">Gallery</p>
-<h2>Moments beneath our stars</h2>
-<p class="gallery-intro">Use the arrows or swipe left and right</p>
-<p aria-live="polite" class="gallery-status" hidden="" id="gallery-status" role="status"></p>
-<div aria-label="Wedding photo slider" class="gallery-slider" id="gallery-slider">
-<button aria-label="Previous photo" class="gallery-slider-arrow gallery-slider-prev" id="gallery-slider-prev" type="button">❮</button>
-<button aria-label="Open current photo full screen" class="gallery-slide-button" id="gallery-slide-button" type="button">
-<div aria-hidden="true" class="gallery-slide-spinner" id="gallery-slide-spinner"></div>
-<img alt="" decoding="async" draggable="false" id="gallery-slide-image" src=""/>
-<span class="gallery-slide-caption" hidden="" id="gallery-slide-caption"></span>
-<span aria-live="polite" class="gallery-slide-counter" id="gallery-slide-counter"></span>
-</button>
-<button aria-label="Next photo" class="gallery-slider-arrow gallery-slider-next" id="gallery-slider-next" type="button">❯</button>
-</div>
-<div aria-label="Gallery thumbnail navigation" class="gallery-filmstrip gallery-filmstrip-inline" id="gallery-filmstrip-inline"></div>
-</section><section class="glass-section wedding-day-section" data-sky="libra" id="wedding-day">
-<p class="section-kicker">Stay connected beneath our stars</p>
-<h2>Wedding Day</h2>
-<p class="wedding-day-message" id="wedding-day-message">We cannot wait to celebrate this night with you.</p>
-<div class="wedding-day-actions">
-<a class="wedding-day-card" hidden="" href="#" id="livestream-link" rel="noopener" target="_blank">
-<span aria-hidden="true" class="wedding-day-icon">◉</span>
-<span><strong>Watch the Livestream</strong><small>Join the celebration from wherever you are</small></span>
-</a>
-<a class="wedding-day-card" hidden="" href="#" id="photo-upload-link" rel="noopener" target="_blank">
-<span aria-hidden="true" class="wedding-day-icon">✦</span>
-<span><strong>Share Your Photos</strong><small>Help us collect every beautiful moment</small></span>
-</a>
-</div>
-<div class="photo-upload-qr" hidden="" id="photo-upload-qr">
-<img alt="QR code for sharing wedding photos" decoding="async" id="photo-upload-qr-image" loading="lazy"/>
-<p>Scan to share your photos</p>
-</div>
-</section>
+	<section id="location" class="glass-section" data-sky="virgo">
+	  <h2>Location</h2>
 
+	  <div class="map-container">
+		<iframe
+		  src="https://www.google.com/maps?q=MDC+Hall+Jakarta&output=embed"
+		  width="100%"
+		  height="300"
+		  style="border:0; border-radius:20px;"
+		  allowfullscreen=""
+		  loading="lazy">
+		</iframe>
+	  </div>
+	</section>
 
+	<section id="wedding-day" class="glass-section wedding-day-section" data-sky="libra">
+      <p class="section-kicker">Stay connected beneath our stars</p>
+      <h2>Wedding Day</h2>
+      <p id="wedding-day-message" class="wedding-day-message">We cannot wait to celebrate this night with you.</p>
+      <div class="wedding-day-actions">
+        <a id="livestream-link" class="wedding-day-card" href="#" target="_blank" rel="noopener" hidden>
+          <span class="wedding-day-icon" aria-hidden="true">◉</span>
+          <span><strong>Watch the Livestream</strong><small>Join the celebration from wherever you are</small></span>
+        </a>
+        <a id="photo-upload-link" class="wedding-day-card" href="#" target="_blank" rel="noopener" hidden>
+          <span class="wedding-day-icon" aria-hidden="true">✦</span>
+          <span><strong>Share Your Photos</strong><small>Help us collect every beautiful moment</small></span>
+        </a>
+      </div>
+      <div id="photo-upload-qr" class="photo-upload-qr" hidden>
+        <img id="photo-upload-qr-image" alt="QR code for sharing wedding photos" loading="lazy" decoding="async" />
+        <p>Scan to share your photos</p>
+      </div>
+    </section>
 
+	<section id="rsvp" class="glass-section" data-sky="scorpio">
+	  <h2 id="rsvp-title">RSVP</h2>
+      <p id="rsvp-closed-notice" class="rsvp-closed-notice" hidden>RSVP submissions are now closed, but you can still read the wishes left in our guestbook.</p>
 
+	  <form id="rsvp-form" novalidate>
+		<label class="sr-only" for="name">Your name</label>
+		<input type="text" id="name" placeholder="Your Name" class="input" maxlength="80" autocomplete="name" required />
 
+		<div class="form-group">
+		  <p class="form-question">Will you attend?</p>
+		  <div class="radio-group" role="radiogroup" aria-label="Attendance">
+			<label class="radio-option">
+			  <input type="radio" name="attendance" value="accept" required />
+			  <span>Yes</span>
+			</label>
+			<label class="radio-option">
+			  <input type="radio" name="attendance" value="decline" required />
+			  <span>No, sorry</span>
+			</label>
+		  </div>
+		</div>
 
+		<label class="sr-only" for="guestCount">Number of guests including you</label>
+		<input type="number" id="guestCount" placeholder="Number of guests (including you)" class="input" min="1" max="20" inputmode="numeric" required />
+
+		<label class="sr-only" for="message">Message or wishes</label>
+		<textarea id="message" placeholder="Leave your wishes..." class="message-input" maxlength="500"></textarea>
+
+		<p id="rsvp-status" class="rsvp-status" role="status" aria-live="polite"></p>
+		<button id="rsvp-submit" class="ultra-btn" type="submit"><span>Submit RSVP</span></button>
+	  </form>
+
+	  <div id="message-board" class="guestbook" hidden>
+		<div class="message-board-heading">
+		  <div>
+			<p class="guestbook-kicker">Written among the stars</p>
+			<h3>Guestbook</h3>
+			<p id="guestbook-count" class="guestbook-count">Wishes from our family and friends</p>
+		  </div>
+		  <button id="refresh-messages" class="message-refresh" type="button" aria-label="Refresh guestbook messages">Refresh</button>
+		</div>
+		<p id="messages-status" class="messages-status" role="status" aria-live="polite">Loading guestbook…</p>
+		<div id="messages-list" class="guestbook-grid"></div>
+	  </div>
+	</section>
+	
+    
+  
 </main>
-<div aria-hidden="true" aria-label="Full-size couple photo" aria-modal="true" class="photo-lightbox" id="photo-lightbox" role="dialog">
-<button aria-label="Close full-size photo" class="lightbox-close" type="button">×</button>
-<img alt="Nicky &amp; Gina" class="lightbox-image" decoding="async" src="assets/Couple.png"/>
-</div>
-<div aria-hidden="true" aria-label="Wedding gallery viewer" aria-modal="true" class="gallery-lightbox" id="gallery-lightbox" role="dialog">
-<div class="gallery-backdrop" data-gallery-close=""></div>
-<button aria-label="Close gallery" class="gallery-lightbox-close" data-gallery-close="" type="button">×</button>
-<button aria-label="Previous photo" class="gallery-lightbox-nav gallery-lightbox-prev" type="button">❮</button>
-<div class="gallery-stage">
-<div aria-hidden="true" class="gallery-spinner" id="gallery-spinner"></div>
-<img alt="" draggable="false" id="gallery-lightbox-image" src=""/>
-<figcaption id="gallery-lightbox-caption"></figcaption>
-</div>
-<button aria-label="Next photo" class="gallery-lightbox-nav gallery-lightbox-next" type="button">❯</button>
-<p aria-live="polite" class="gallery-lightbox-counter" id="gallery-lightbox-counter"></p>
-<div aria-label="Gallery thumbnail navigation" class="gallery-filmstrip" id="gallery-filmstrip"></div>
-</div>
-<audio id="backgroundMusic" loop="" preload="none" src="assets/music.m4a"></audio>
-<button aria-label="Play background music" aria-pressed="false" class="music-toggle" hidden="" id="musicToggle" type="button">
-<span aria-hidden="true" class="music-icon">♪</span>
-<span class="music-label">Music</span>
-</button>
-<script src="config.js?v=5.4.1"></script>
-<script src="app.js?v=5.4.1"></script>
-<script defer="" src="gallery.js?v=5.4.1"></script>
+
+  <div id="photo-lightbox" class="photo-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Full-size couple photo">
+    <button class="lightbox-close" type="button" aria-label="Close full-size photo">&times;</button>
+    <img src="assets/Couple.png" alt="Nicky & Gina" class="lightbox-image" decoding="async"/>
+  </div>
+
+  <div id="gallery-lightbox" class="gallery-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Wedding gallery viewer">
+    <div class="gallery-backdrop" data-gallery-close></div>
+    <button class="gallery-lightbox-close" type="button" aria-label="Close gallery" data-gallery-close>&times;</button>
+    <button class="gallery-lightbox-nav gallery-lightbox-prev" type="button" aria-label="Previous photo">&#10094;</button>
+    <div class="gallery-stage">
+      <div id="gallery-spinner" class="gallery-spinner" aria-hidden="true"></div>
+      <img id="gallery-lightbox-image" src="" alt="" draggable="false" />
+      <figcaption id="gallery-lightbox-caption"></figcaption>
+    </div>
+    <button class="gallery-lightbox-nav gallery-lightbox-next" type="button" aria-label="Next photo">&#10095;</button>
+    <p id="gallery-lightbox-counter" class="gallery-lightbox-counter" aria-live="polite"></p>
+    <div id="gallery-filmstrip" class="gallery-filmstrip" aria-label="Gallery thumbnail navigation"></div>
+  </div>
+
+  <audio id="backgroundMusic" preload="none" loop src="assets/music.m4a"></audio>
+  <button id="musicToggle" class="music-toggle" type="button" aria-label="Play background music" aria-pressed="false" hidden>
+    <span class="music-icon" aria-hidden="true">♪</span>
+    <span class="music-label">Music</span>
+  </button>
+
+  <script src="config.js?v=5.4.2"></script>
+  <script src="app.js?v=5.4.2"></script>
+  <script src="gallery.js?v=5.4.2" defer></script>
 </body>
 </html>
