@@ -1459,3 +1459,53 @@ body.lightbox-open {
   opacity: 1 !important;
   transform: none !important;
 }
+
+
+/* V5.4.1 — reception details and compact gallery */
+.reception-details {
+  display: grid;
+  gap: 13px;
+  width: min(100%, 470px);
+  margin: 4px auto 30px;
+  text-align: left;
+}
+
+.reception-detail {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 0;
+  color: rgba(244, 246, 250, .92);
+  font-family: Arial, sans-serif;
+  font-size: clamp(15px, 2.5vw, 18px);
+  line-height: 1.45 !important;
+  opacity: 1 !important;
+}
+
+.reception-detail-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  color: #f3f5f8;
+  filter: drop-shadow(0 0 7px rgba(216,181,109,.18));
+}
+
+.reception-detail-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#gallery .gallery-intro {
+  margin-bottom: 10px;
+}
+
+#gallery-status[hidden] {
+  display: none !important;
+}
